@@ -6,7 +6,7 @@ import coloredlogs
 
 from flask import Flask, jsonify, request, abort, Response, json
 from bson import json_util
-
+from bson.json_util import dumps
 from flask.ext.pymongo import PyMongo
 
 #http://api.mongodb.org/python/current/api/bson/json_util.html
