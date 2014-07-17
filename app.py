@@ -1,10 +1,12 @@
 #!ve/bin/python
 import sys
-import json
 import logging
+import pprint
 import coloredlogs
-from flask import Flask, jsonify, request, abort
-from bson.json_util import dumps
+
+from flask import Flask, jsonify, request, abort, Response, json
+from bson import json_util
+
 from flask.ext.pymongo import PyMongo
 
 #http://api.mongodb.org/python/current/api/bson/json_util.html
@@ -24,14 +26,17 @@ def index():
 @app.route('/courses/del', methods = ['GET'])
 def delete_courses():
 	print request.args.getlist('help')
+
 	all_courses_dict = list(mongo.db['courses'].find({}, {'_id': 0}))
 	return  dumps(all_courses_dict)
 
 @app.route('/courses/', methods = ['GET'])
 def get_courses():
-	print request.args.getlist('help')
-	all_courses_dict = list(mongo.db['courses'].find({}, {'_id': 0}))
-	return  dumps(all_courses_dict)
+	#print request.args.getlist('help')
+	doc = list(mongo.db['courses'].find({}, {'_id': 0}))
+	#return loads(all_courses_dict)
+	return Response(json.dumps(doc, indent=4, default=json_util.default), mimetype='application/json')
+	
 
 @app.route('/courses/<coursecode>', methods = ['GET'])
 def get_course(coursecode):
