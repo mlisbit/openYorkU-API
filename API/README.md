@@ -5,10 +5,12 @@ api.openyorku.com
 ```
 
 ### Courses
-URI  |  METHOD  |  DESCRIPTION  | PARAMS | STATUS  
-------------- | ------------- | ------------- | ------------- | -------------
-/courses/  | GET | get all courses |  | done
-Content Cell  | Content Cell
+RESOURCE | DESCRIPTION  | PARAMS | STATUS  
+------------- | ------------- | ------------- | -------------
+GET /courses/  | get all courses 
+POST /courses/  | add a course  
+GET /courses/{course_code}  | get info for a specific course 
+POST /courses/{course_code}  | change info for specific course
 
 ### Events
 
