@@ -15,6 +15,7 @@ app = Flask(__name__)
 mongo = PyMongo(app)
 version = '/v1/'
 logger = logging.getLogger(__name__)
+#mongo.db['courses'].ensureIndex( { "course_code": 1 }, { unique: true } )
 
 
 coloredlogs.install(level=logging.INFO, show_timestamps=False, show_hostname=False, show_name=False)
@@ -25,16 +26,23 @@ def index():
 
 @app.route('/courses/del', methods = ['GET'])
 def delete_courses():
-	print request.args.getlist('help')
-
-	all_courses_dict = list(mongo.db['courses'].find({}, {'_id': 0}))
-	return  dumps(all_courses_dict)
+	mongo.db['courses'].remove()
+	doc = list(mongo.db['courses'].find({}, {'_id': 0}))
+	return  Response(json.dumps(doc, indent=4, default=json_util.default), mimetype='application/json')
 
 @app.route('/courses/', methods = ['GET'])
 def get_courses():
 	#print request.args.getlist('help')
-	doc = list(mongo.db['courses'].find({}, {'_id': 0}))
-	#return loads(all_courses_dict)
+	args = {}
+
+	#if a param is anumber, convert it.
+	for key in request.args.to_dict():
+		if request.args.get(key).isdigit():
+			args[key] = int(request.args.get(key))
+		else:
+			args[key] = request.args.get(key)
+	
+	doc = list(mongo.db['courses'].find(args, {'_id': 0}))
 	return Response(json.dumps(doc, indent=4, default=json_util.default), mimetype='application/json')
 	
 
