@@ -34,15 +34,18 @@ def delete_courses():
 def get_courses():
 	#print request.args.getlist('help')
 	args = {}
+	fields = {'_id': 0}
 
 	#if a param is anumber, convert it.
 	for key in request.args.to_dict():
-		if request.args.get(key).isdigit():
+		if key == 'fields':
+			fields[request.args.get(key)] = 1
+		elif request.args.get(key).isdigit():
 			args[key] = int(request.args.get(key))
 		else:
 			args[key] = request.args.get(key)
 	
-	doc = list(mongo.db['courses'].find(args, {'_id': 0}))
+	doc = list(mongo.db['courses'].find(args, fields))
 	return Response(json.dumps(doc, indent=4, default=json_util.default), mimetype='application/json')
 	
 
