@@ -32,15 +32,26 @@ def delete_courses():
 
 @app.route('/courses/', methods = ['GET'])
 def get_courses():
-	#print request.args.getlist('help')
 	args = {}
-	fields = {'_id': 0}
+	fields = {'_id': 0, 'terms_offered': 0, 'instructors': 0, 'description': 0, 'term_year': 0, "faculty": 0}
 
-	#if a param is anumber, convert it.
 	for key in request.args.to_dict():
 		if key == 'fields':
-			fields[request.args.get(key)] = 1
+			#only show these fields in the response.
+			field_args = request.args.get(key).split(',')
+			fields = {'_id': 0}
+			for field_arg in field_args:
+				fields[field_arg]=1
+		elif key == 'unhide-fields':
+			#show the hidden fields of a typical response
+			field_args = request.args.get(key).split(',')
+			for field_arg in field_args:
+				try:
+					del fields[field_arg]
+				except:
+					logger.warn('attempted to remove field that was not already remove (possibly doesnt exist)')
 		elif request.args.get(key).isdigit():
+			#if number is a digit, convert it.
 			args[key] = int(request.args.get(key))
 		else:
 			args[key] = request.args.get(key)
