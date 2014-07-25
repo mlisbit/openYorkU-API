@@ -30,22 +30,17 @@ app.use(express.cookieParser('a_secret_key'));
 app.use(express.session());
 app.use(app.router);
 app.use(function (err, req, res, next) {
-	console.log(err.name, err.err);
-	res.status(400).send(err.name, err.err)
+	console.log('ERROR', err.name, err.err);
+	res.status(400).send('ERROR', err.name, err.err)
 })
 
-/*
-// development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
-}
-*/
 
 app.get('/', routes.index);
 app.get('/courses', courses.list);
 //just for testing really.
 app.get('/courses/del', courses.clear_db);
 app.post('/courses', courses.add_course);
+app.put('/courses', courses.modify_course);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

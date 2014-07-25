@@ -6,13 +6,13 @@ var CourseSchema = new Schema({
     'course_number': Number,
     'course_subject': String,
     'title': String,
-    'faculty': String,
+    'faculty': [String],
     'year_level': Number,
-    'credit_count': Number,
-    'terms_offered': [String],
+    'credit_count': [Number],
+    'term_years_offered': [Number],
     'instructors': [String],
     'description': String,
-    'term_year': Number,
+
 });
 
 Course = mongoose.model('Course', CourseSchema);

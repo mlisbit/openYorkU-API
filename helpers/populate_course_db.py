@@ -1,4 +1,4 @@
-#!ve/bin/python
+#!/usr/bin/python
 import requests
 import json
 import copy
@@ -12,10 +12,9 @@ course_data_template = {
 	'faculty': '',
 	'year_level': 0,
 	'credit_count': '',
-	'terms_offered': [],
+	'term_years_offered': [],
 	'instructors': [],
-	'description': '',
-	'term_year': 0,
+	'description': ''
 }
 
 term_year = 1415
@@ -40,21 +39,30 @@ def populate_course_db():
 				new_data['course_number'] = first_part[1]
 				new_data['year_level'] = int(new_data['course_number'][0])
 				new_data['credit_count'] = int(float(first_part[2]))
-				new_data['term_year'] = term_year
 				new_data['course_code'] = new_data['course_subject']+new_data['course_number']
 
-				new_term_data['term_year'] = new_data['term_year']
-				new_term_data['terms'].append(term)
-
-				new_data['terms_offered'].append(new_term_data)
+				new_data['term_years_offered'].append(term_year)
+				new_data.pop("instructors", None)
 				result_post.append(new_data)
 	return result_post
 
 def populate_subject_db():
 	pass
 
+def test():
+	pass
+	#r = requests.post('http://127.0.0.1:1337/courses/', data={'credit_count': 3, 'description': '', 'title': 'Introduction To Financial Accounting I', 'course_subject': 'ACTG', 'year_level': 2, 'term_year': 1415, 'course_number': '2010', 'faculty': 'SB', 'course_code': 'ACTG2010', 'terms_offered': [{'terms': ['W or F'], 'term_year': 1415}]})
+	#r = requests.post('http://127.0.0.1:1337/courses/', data={'credit_count': 4, 'description': '', 'title': 'Introduction To Financial Accounting I', 'course_subject': 'ACTG', 'year_level': 2, 'course_number': '2010', 'faculty': 'SB', 'course_code': 'ACTG2010', 'terms_offered': 1415}})
+	#r = requests.put('http://127.0.0.1:1337/courses/', data={'credit_count': 99, 'description': '', 'title': 'Introduction To Financial Accounting I', 'course_subject': 'ACTG', 'year_level': 2, 'instructors': '', 'term_year': 1415, 'course_number': '2010', 'faculty': 'SB', 'course_code': 'ACTG2010', 'terms_offered': [{'terms': ['W or F'], 'term_year': 1415}]})
+	
+
 if __name__ == '__main__':
 	#print json.dumps(new_data, sort_keys=True, indent=4, separators=(',', ': '))
-	for i in populate_course_db():
-		r = requests.post('http://127.0.0.1:5000/courses/', data=json.dumps(i))
-		
+	#test()
+	
+	for i in populate_course_db():	
+		r = requests.post('http://127.0.0.1:1337/courses/', data=i)
+		if r != '<Response [200]>':
+			r = requests.put('http://127.0.0.1:1337/courses/', data=i)
+	
+	
