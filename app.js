@@ -1,10 +1,15 @@
 var express = require('express');
 var routes = require('./routes');
-var courses = require('./routes/courses');
 var http = require('http');
 var path = require('path');
 var reload = require('reload');
 var mongoose = require("mongoose");
+
+/* ROUTES */
+var courses = require('./routes/courses');
+var faculties = require('./routes/faculties');
+var subjects = require('./routes/subjects');
+
 //include winston
 //include underscore
 
@@ -36,11 +41,21 @@ app.use(function (err, req, res, next) {
 
 
 app.get('/', routes.index);
+/* COURSES */
 app.get('/courses', courses.list);
-//just for testing really.
 app.get('/courses/del', courses.clear_db);
-app.post('/courses', courses.add_course);
 app.put('/courses', courses.modify_course);
+app.post('/courses', courses.add_course);
+
+/* FACULTIES */
+app.get('/faculties', faculties.list);
+
+/* SUBJECTS */
+app.get('/subjects/collect', subjects.collect_courses);
+app.get('/subjects/del', subjects.clear_db);
+app.get('/subjects', subjects.list);
+app.post('/subjects', subjects.add_subject);
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

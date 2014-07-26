@@ -17,10 +17,14 @@ course_data_template = {
 	'description': ''
 }
 
+subject_data_template = {
+	'code': '',
+	'title': ''
+}
 term_year = 1415
 term = "W or F"
 
-def populate_course_db():
+def get_course_db():
 	result_post = []
 	with open('txt_files/course_list.txt', 'rU') as f:
 		for line in f:	
@@ -46,8 +50,31 @@ def populate_course_db():
 				result_post.append(new_data)
 	return result_post
 
+def get_subject_db():
+	result_post=[]
+	with open('txt_files/subject_list.txt', 'rU') as f:
+		for line in f:
+			if line.strip():
+				new_data = copy.deepcopy(subject_data_template)
+				sections = line.split('-')
+				
+				new_data['code'] = sections[0].strip()
+				new_data['title'] = sections[1].strip()
+				result_post.append(new_data)
+	return result_post
+
+
 def populate_subject_db():
-	pass
+	for i in get_subject_db():	
+		r = requests.post('http://127.0.0.1:1337/subjects/', data=i)
+		if r.status_code != 200:
+			r = requests.put('http://127.0.0.1:1337/subjects/', data=i)
+
+def populate_course_db():
+	for i in get_course_db():	
+		r = requests.post('http://127.0.0.1:1337/courses/', data=i)
+		if r.status_code != 200:
+			r = requests.put('http://127.0.0.1:1337/courses/', data=i)
 
 def test():
 	pass
@@ -59,10 +86,8 @@ def test():
 if __name__ == '__main__':
 	#print json.dumps(new_data, sort_keys=True, indent=4, separators=(',', ': '))
 	#test()
+	print populate_subject_db()
 	
-	for i in populate_course_db():	
-		r = requests.post('http://127.0.0.1:1337/courses/', data=i)
-		if r != '<Response [200]>':
-			r = requests.put('http://127.0.0.1:1337/courses/', data=i)
+	
 	
 	
