@@ -33,7 +33,7 @@ def populate_course_db():
 				first_part = sections[0].split(' ')
 				faculty_and_course_code = first_part[0].split('/')
 
-				new_data['title'] = sections[1]
+				new_data['title'] = sections[1].strip()
 				new_data['faculty'] = faculty_and_course_code[0]
 				new_data['course_subject'] = faculty_and_course_code[1]
 				new_data['course_number'] = first_part[1]
