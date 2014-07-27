@@ -9,6 +9,7 @@
     "express": "3.5.1",
     "reload": "*",
     "mongoose": "*",
-    "winston": "*"
+    "winston": "*",
+    "express-mongoose-docs": "*"
   }
 }

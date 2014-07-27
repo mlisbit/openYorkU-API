@@ -4,6 +4,7 @@ var http = require('http');
 var path = require('path');
 var reload = require('reload');
 var mongoose = require("mongoose");
+var docs = require("express-mongoose-docs");
 
 /* ROUTES */
 var courses = require('./routes/courses');
@@ -39,24 +40,29 @@ app.use(function (err, req, res, next) {
 	console.log('ERROR', err.name, err.err);
 })
 
+docs(app, mongoose);
 
+/* HOME */
 app.get('/', routes.index);
+app.get('/help', routes.index);
+
 /* COURSES */
 app.get('/courses', courses.list);
 app.get('/courses/del', courses.clear_db);
 app.put('/courses', courses.modify_course);
+app.get('/courses/:code', courses.show_course);
 app.post('/courses', courses.add_course);
 
 /* FACULTIES */
 app.get('/faculties', faculties.list);
 
 /* SUBJECTS */
+app.get('/subjects', subjects.list);
 app.get('/subjects/collect', subjects.collect_courses);
 app.get('/subjects/del', subjects.clear_db);
-app.get('/subjects', subjects.list);
 app.get('/subjects/:code', subjects.show_subject);
+app.put('/subjects', subjects.modify_subject);
 app.post('/subjects', subjects.add_subject);
-
 
 
 http.createServer(app).listen(app.get('port'), function(){

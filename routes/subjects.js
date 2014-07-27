@@ -4,6 +4,7 @@ var course_model = require('../models/courses.js');
 var Course = course_model.Course;
 var Subject = subject_model.Subject;
 
+//GET
 exports.list = function(req, res, next){
 	var limit 		= 0
 		, offset 	= 0
@@ -59,6 +60,8 @@ exports.list = function(req, res, next){
         	res.status(200).send(subjects)
     	});
 };
+
+//GET
 exports.collect_courses = function(req, res, next){
 	Course.find({}, {}, {limit: 0}, function (err, courses) {
 		for (i in courses) {
@@ -75,11 +78,15 @@ exports.collect_courses = function(req, res, next){
 		res.send("collected all the subjects from courses document.")
 	)
 };
+
+//GET (should be DEL)
 exports.clear_db = function(req, res, next){
 	Subject.remove(function(err) {
 		res.send("removed database successfully.")
 	});
-}
+};
+
+//POST
 exports.add_subject = function(req, res, next){
 	var instance = new Subject(req.body);
 	instance.save(function(err) {
@@ -89,6 +96,8 @@ exports.add_subject = function(req, res, next){
 		res.send("added a subject!");	
 	});
 };
+
+//GET
 exports.show_subject = function(req, res, next){
 	Subject
 		.findOne({code: req.params.code.toUpperCase()})
@@ -99,4 +108,9 @@ exports.show_subject = function(req, res, next){
 			}
         	res.status(200).send(subject)
     	});
+};
+
+//PUT
+exports.modify_subject = function(req, res, next){
+
 }
