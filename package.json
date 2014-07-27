@@ -10,6 +10,7 @@
     "reload": "*",
     "mongoose": "*",
     "winston": "*",
-    "express-mongoose-docs": "*"
+    "express-mongoose-docs": "*",
+    "mongoose-schema-extend": "*"
   }
 }

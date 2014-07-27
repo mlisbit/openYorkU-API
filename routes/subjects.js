@@ -99,9 +99,20 @@ exports.add_subject = function(req, res, next){
 
 //GET
 exports.show_subject = function(req, res, next){
+	var course_populate_string 	= 'title -_id'
+		, q 					= req.query
+	for (key in q) {
+		var arguement_list = q[key].split(',');
+		switch (key) {
+			case 'course_fields':
+				course_populate_string = course_populate_string + arguement_list.toString().replace(',', ' ');
+				break;
+		}
+	} //for
+	
 	Subject
 		.findOne({code: req.params.code.toUpperCase()})
-		.populate('courses', 'title -_id')
+		.populate('courses', course_populate_string)
 		.exec(function (err, subject) {
 			if (err) {
 				next(err)

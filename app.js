@@ -10,9 +10,11 @@ var docs = require("express-mongoose-docs");
 var courses = require('./routes/courses');
 var faculties = require('./routes/faculties');
 var subjects = require('./routes/subjects');
+var places = require('./routes/places');
 
 //include winston
 //include underscore
+//include mocha
 
 mongoose.connect('mongodb://localhost/openyorku', function(err) {
 	if (!err) {
@@ -63,6 +65,9 @@ app.get('/subjects/del', subjects.clear_db);
 app.get('/subjects/:code', subjects.show_subject);
 app.put('/subjects', subjects.modify_subject);
 app.post('/subjects', subjects.add_subject);
+
+/* PLACES */
+app.get('/places', places.list);
 
 
 http.createServer(app).listen(app.get('port'), function(){
