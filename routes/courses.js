@@ -44,7 +44,7 @@ exports.list = function(req, res, next){
 				console.log('ive been hit', arguement_list, key);
 				var in_query = {}
 				in_query.$in = arguement_list.map(function(item) {
-					return parseInt(item, 10)
+					return parseInt(item, 10) || item
 				});
 				args[key] = in_query
 		} //switch

@@ -35,8 +35,8 @@ app.use(express.cookieParser('a_secret_key'));
 app.use(express.session());
 app.use(app.router);
 app.use(function (err, req, res, next) {
+	res.send('ERROR')
 	console.log('ERROR', err.name, err.err);
-	res.status(400).send('ERROR', err.name, err.err)
 })
 
 
@@ -54,7 +54,9 @@ app.get('/faculties', faculties.list);
 app.get('/subjects/collect', subjects.collect_courses);
 app.get('/subjects/del', subjects.clear_db);
 app.get('/subjects', subjects.list);
+app.get('/subjects/:code', subjects.show_subject);
 app.post('/subjects', subjects.add_subject);
+
 
 
 http.createServer(app).listen(app.get('port'), function(){
