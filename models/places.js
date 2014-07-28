@@ -24,7 +24,7 @@ var BuildingSchema = PlaceSchema.extend({
 });
 
 var RestaurantSchema = PlaceSchema.extend({
-	type	: [String]
+	tags	: [String],
 	hours 	: {
 		monday		: {open: String, close: String},
 		tuesday		: {open: String, close: String},
@@ -33,7 +33,9 @@ var RestaurantSchema = PlaceSchema.extend({
 		friday		: {open: String, close: String},
 		saturday	: {open: String, close: String},
 		sunday		: {open: String, close: String}
-	}
+	},
+	logo_url: String,
+	serves_booze: Boolean
 });
 
 var ArtSchema = PlaceSchema.extend({

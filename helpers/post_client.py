@@ -1,9 +1,8 @@
 #!/usr/bin/python
-import requests
+import requests, sys, getopt
 import json
 import copy
 
-term_offered_template = {'term_year': 0, 'terms': []}
 course_data_template = {
 	'course_code': '',	
 	'course_number': '',
@@ -21,6 +20,17 @@ subject_data_template = {
 	'code': '',
 	'title': ''
 }
+
+restaurant_data_template = {
+	'name'		: '',
+	'telephone'	: '',
+	'building'	: '',
+	'tags'		: '',
+	'hours' 	: '',
+	'logo_url'	: '',
+	'serves_booze': ''
+}
+
 term_year = 1415
 term = "W or F"
 
@@ -30,8 +40,7 @@ def get_course_db():
 		for line in f:	
 			if line.strip():
 				new_data = copy.deepcopy(course_data_template)
-				new_term_data = copy.deepcopy(term_offered_template)
-
+				
 				sections = line.split('\t')
 
 				first_part = sections[0].split(' ')
@@ -63,6 +72,30 @@ def get_subject_db():
 				result_post.append(new_data)
 	return result_post
 
+def get_restaurant_db():
+	result_post=[]
+	section_line = 0
+	with open('txt_files/restaurant_list.txt', 'rU') as f:
+		for line in f:
+			if line.strip():
+				if (section_line == 0):
+					new_data = copy.deepcopy(restaurant_data_template)
+					new_data['name'] = line.strip()
+					section_line += 1
+				elif (section_line == 1):
+					new_data['building'] = line.strip()
+					section_line += 1
+				elif (section_line == 2):
+					new_data['telephone'] = line.strip()
+					section_line += 1
+				elif (section_line == 3):
+					new_data['hours'] = line.strip()
+					section_line = 0
+				new_data['tags'] = 'food'
+
+				result_post.append(new_data)
+	return result_post
+
 
 def populate_subject_db():
 	for i in get_subject_db():	
@@ -82,11 +115,35 @@ def test():
 	#r = requests.post('http://127.0.0.1:1337/courses/', data={'credit_count': 4, 'description': '', 'title': 'Introduction To Financial Accounting I', 'course_subject': 'ACTG', 'year_level': 2, 'course_number': '2010', 'faculty': 'SB', 'course_code': 'ACTG2010', 'terms_offered': 1415}})
 	#r = requests.put('http://127.0.0.1:1337/courses/', data={'credit_count': 99, 'description': '', 'title': 'Introduction To Financial Accounting I', 'course_subject': 'ACTG', 'year_level': 2, 'instructors': '', 'term_year': 1415, 'course_number': '2010', 'faculty': 'SB', 'course_code': 'ACTG2010', 'terms_offered': [{'terms': ['W or F'], 'term_year': 1415}]})
 	
+def main(argv):
+	try:
+		opts, args = getopt.getopt(argv,"htp:",["populate="])
+	except getopt.GetoptError:
+		print 'post_client.py -p <db_document>'
+		sys.exit(2)
+	if not opts:
+		print "post_client.py -p <db_document>"
+	else:
+		for opt, arg in opts:	
+			if opt == '-h':
+				print 'post_client.py -p <db_document>'
+				sys.exit()
+			elif opt in ("-p", "--populate"):
+				if (arg == 'courses'):
+					print "Populating Course db..."
+					populate_course_db()
+				if (arg == 'subjects'):
+					print "Populating Subjects db..."
+					populate_subject_db()
+				if (arg == 'test'):
+					print "just testing..."
+				if (arg == 'restaurant'):
+					print "just testing restaurants..."
+					print get_restaurant_db()
+					
+if __name__ == "__main__":
+   main(sys.argv[1:])
 
-if __name__ == '__main__':
-	#print json.dumps(new_data, sort_keys=True, indent=4, separators=(',', ': '))
-	#test()
-	print populate_subject_db()
 	
 	
 	
