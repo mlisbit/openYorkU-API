@@ -3,6 +3,8 @@ import requests, sys, getopt
 import json
 import copy
 
+headers = {'content-type': 'application/json'}
+
 course_data_template = {
 	'course_code': '',	
 	'course_number': '',
@@ -26,7 +28,15 @@ restaurant_data_template = {
 	'telephone'	: '',
 	'building'	: '',
 	'tags'		: '',
-	'hours' 	: '',
+	'hours' 	: {
+		'monday'		: {'open': '', 'close': ''},
+		'tuesday'		: {'open': '', 'close': ''},
+		'wednesday'		: {'open': '', 'close': ''},
+		'thursday'		: {'open': '', 'close': ''},
+		'friday'		: {'open': '', 'close': ''},
+		'saturday'		: {'open': '', 'close': ''},
+		'sunday'		: {'open': '', 'close': ''}
+	},
 	'logo_url'	: '',
 	'serves_booze': ''
 }
@@ -78,8 +88,12 @@ def get_restaurant_db():
 	with open('txt_files/restaurant_list.txt', 'rU') as f:
 		for line in f:
 			if line.strip():
+				line = line.strip()
 				if (section_line == 0):
 					new_data = copy.deepcopy(restaurant_data_template)
+					if '*' in line:
+						new_data['serves_booze'] = True
+						line = line.replace('*', '')
 					new_data['name'] = line.strip()
 					section_line += 1
 				elif (section_line == 1):
@@ -89,7 +103,16 @@ def get_restaurant_db():
 					new_data['telephone'] = line.strip()
 					section_line += 1
 				elif (section_line == 3):
-					new_data['hours'] = line.strip()
+					#time to parse that hour string.
+					days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+					day_data = line.strip().split(',')
+					for current,day_hours in enumerate(day_data):
+						if (day_hours.strip().upper() != 'CLOSED'):
+							new_data['hours'][days[current]]['open'] = day_hours.split('-')[0].strip()
+							new_data['hours'][days[current]]['close'] = day_hours.split('-')[1].strip()
+						else:
+							new_data['hours'][days[current]]['open'] = 'closed'
+							new_data['hours'][days[current]]['close'] = 'closed'
 					section_line = 0
 				new_data['tags'] = 'food'
 
@@ -99,15 +122,23 @@ def get_restaurant_db():
 
 def populate_subject_db():
 	for i in get_subject_db():	
-		r = requests.post('http://127.0.0.1:1337/subjects/', data=i)
+		r = requests.post('http://127.0.0.1:1337/subjects/', data=json.dumps(i), headers=headers)
 		if r.status_code != 200:
-			r = requests.put('http://127.0.0.1:1337/subjects/', data=i)
+			r = requests.put('http://127.0.0.1:1337/subjects/', data=json.dumps(i), headers=headers)
 
 def populate_course_db():
 	for i in get_course_db():	
-		r = requests.post('http://127.0.0.1:1337/courses/', data=i)
+		r = requests.post('http://127.0.0.1:1337/courses/', data=json.dumps(i), headers=headers)
 		if r.status_code != 200:
-			r = requests.put('http://127.0.0.1:1337/courses/', data=i)
+			r = requests.put('http://127.0.0.1:1337/courses/', data=json.dumps(i), headers=headers)
+
+def populate_restaurant_db():
+	
+	for i in get_restaurant_db():	
+		r = requests.post('http://127.0.0.1:1337/places/restaurants', data=json.dumps(i), headers=headers)
+		if r.status_code != 200:
+			r = requests.put('http://127.0.0.1:1337/places/restaurants', data=json.dumps(i), headers=headers)
+		break;
 
 def test():
 	pass
@@ -139,7 +170,7 @@ def main(argv):
 					print "just testing..."
 				if (arg == 'restaurant'):
 					print "just testing restaurants..."
-					print get_restaurant_db()
+					print populate_restaurant_db()
 					
 if __name__ == "__main__":
    main(sys.argv[1:])

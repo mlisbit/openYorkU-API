@@ -37,9 +37,17 @@ app.use(express.methodOverride());
 app.use(express.cookieParser('a_secret_key'));
 app.use(express.session());
 app.use(app.router);
-app.use(function (err, req, res, next) {
+app.use(function api_ify(err, req, res, next) {
+	output_template = {
+		meta: {
+
+		},
+		data: [
+
+		]
+	}
 	res.send('ERROR')
-	console.log('ERROR', err.name, err.err);
+	console.log('ERROR', err);
 })
 
 docs(app, mongoose);
@@ -68,6 +76,8 @@ app.post('/subjects', subjects.add_subject);
 
 /* PLACES */
 app.get('/places', places.list);
+app.get('/places/del', places.clear_db);
+app.post('/places/restaurants', places.add_restaurant);
 
 
 http.createServer(app).listen(app.get('port'), function(){

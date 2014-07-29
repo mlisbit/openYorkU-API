@@ -3,13 +3,13 @@ var mongoose = require("mongoose")
 
 var Schema = mongoose.Schema;
 var PlaceSchema = new Schema({
-	name 	: String,
+	name 	: {type: String, unique: true},
 	building: String,
 	location: {
 		lon: Number,
 		lat: Number
 	}
-});
+}, { collection : 'places', discriminatorKey : '_type' });
 
 var LibrarySchema = PlaceSchema.extend({
 	
@@ -44,5 +44,7 @@ var ArtSchema = PlaceSchema.extend({
 
 Place = mongoose.model('Place', PlaceSchema);
 Library = mongoose.model('Library', LibrarySchema);
+Restaurant = mongoose.model('Restaurant', RestaurantSchema);
 exports.Place = Place;
+exports.Restaurant = Restaurant;
 
