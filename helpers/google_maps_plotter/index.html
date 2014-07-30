@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
+      #panel {
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        margin-left: -180px;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+      }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKX3zUn--IcQJJtQ8BmwmHpVVQ_flnibM">
+    </script>
+    <script type="text/javascript" src="scripts/maps.js"></script>
+  </head>
+  <body>
+    <div id="panel">
+      <input onclick="clearMarkers();" type=button value="Hide Markers">
+      <input onclick="showMarkers();" type=button value="Show All Markers">
+      <input onclick="deleteMarkers();" type=button value="Delete Markers">
+      <input onclick="printMarkers();" type=button value="Print Markers">
+      <input id="markit" type=checkbox name="markit" value="markit" checked>Mark on Click
+    </div>
+    <div id="map-canvas"></div>
+    <p>Click on the map to add markers.</p>
+  </body>
+</html>
