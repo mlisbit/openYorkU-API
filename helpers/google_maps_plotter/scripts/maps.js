@@ -34,7 +34,7 @@ var styles = [
 	},
 ];
 
-var weird_glitch_in_my_IDE_requires_to_be_here_for_syntax_highlights = ['pointless'];
+var weird_glitch_in_my_IDE_requires_this_to_be_here_for_syntax_highlights = ['pointless'];
 
 function initialize() {
 	var york_campus = new google.maps.LatLng(43.774543, -79.501192);
@@ -52,8 +52,37 @@ function initialize() {
 		addMarker(event.latLng);
 	});
 	
+	readTextFile('restaurant_extended_list.txt', function(text) {
+		lines = text.split('\n')
+		for (i in lines) {
+			line_sections = lines[i].split(',')
+			console.log(line_sections[0].trim())
+			if (line_sections[1]) {
+				place_location = new google.maps.LatLng(parseFloat(line_sections[1]), parseFloat(line_sections[2]))
+				addMarker(place_location, line_sections[0].trim());
+			}
+		}
+	})
 
 	drawBoundries();
+}
+
+function readTextFile(file, fn) {
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+				if (typeof(fn) === 'function') {
+                	fn(rawFile.responseText)
+				}
+            }
+        }
+    }
+    rawFile.send(null);
 }
 
 function drawBoundries() {
@@ -98,17 +127,12 @@ var iw = new google.maps.InfoWindow({
 	content: ''
 });
 
-function populateKnownMarkers() {
-	data = ""
-	addMarker(location, label);
-}
-
 function addMarker(location, label) {
 	if (document.getElementById('markit').checked) {
 		var marker = new google.maps.Marker({
 			position: location,
 			map: map,
-			title: "Initial Marker",
+			title: label,
        		iw: label
 		});
 		
@@ -147,7 +171,7 @@ function deleteMarkers() {
 
 function printMarkers() {
 	for (i in markers) {
-		console.log(markers[i].position.toString())
+		console.log(markers[i].position.toString(), markers[i].iw)
 	}
 	//http://maps.vasile.ch/geomask/
 	//http://www.ttu.edu/map/
