@@ -19,13 +19,22 @@ exports.clear_db = function(req, res, next){
 
 //post
 exports.add_restaurant = function(req, res, next){
-	console.log(req.body)
 	var instance = new Restaurant(req.body);
-	instance.name = req.body.name
 	instance.save(function(err) {
 		if (err) {
 			next(err);
 		}
 		res.send("added a restaurant!");	
+	});
+};
+
+//post
+exports.add_building = function(req, res, next){
+	var instance = new Restaurant(req.body);
+	instance.save(function(err) {
+		if (err) {
+			next(err);
+		}
+		res.send("added a building!");	
 	});
 };
