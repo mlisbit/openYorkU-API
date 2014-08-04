@@ -1,21 +1,10 @@
-190 Albany Road
-320 Assiniboine Road (AS2)
-340 Assiniboine Road (AS4)
-360 Assiniboine Road (AS6)
-380 Assiniboine Road (AS8)
 Accolade East (ACE)
 Accolade West (ACW)
-Albany Road Lot
-Arboretum Lane Parking Garage (ARB)
 Archives of Ontario (AO)
-Art Gallery of York University AGYU (ACE)
 Atkinson (ATK)
-Atkinson Lot
 Atkinson Residence (AR)
 Behavioural Science (BSB)
 Bennett Centre for Student Services / Admissions (BCSS)
-Bookstore – York Lanes (YL)
-Brampton Transit – 1
 Burton Auditorium (BU)
 Calumet College (CC)
 Calumet Residence (CR)
@@ -25,95 +14,64 @@ Central Utilities Building (CUB)
 Centre for Film & Theatre (CFT)
 Chemistry (CB)
 Computer Methods Building (CMB)
-Construction Notice: Advanced Temporary Road Construction for York University Station
 Curtis Lecture Halls (CLH)
 Executive Learning Centre (ELC)
 Farquharson Life Sciences (FRQ)
 Founders College (FC)
 Founders Residence (FR)
-Founders Road East Lot
-Founders Road East Lot
-Founders Road West Lot
-Gales Gallery (ACW)
-GO Transit – 1
-GO Transit – 2
-GO Transit – 3
-GO Transit – 4
-GO Transit – 5
 Harry Sherman Crowe Housing Co-op (HCC)
 Hart House (HH)
 Health, Nursing & Environmental Studies (HNE)
 Hoover House (HOH)
 Ignat Kaneff Building, Osgoode Hall Law School (OSG)
-Information Kiosk
 Joan & Martin Goldfarb Centre for Fine Arts (CFA)
-Joseph Green Studio Theatre (CFT)
 Kaneff Tower (KT)
 Kinsmen (K)
-Kinsmen Lot
 Lassonde Building (LAS)
 Life Sciences Building (LSB)
 Lorna R. Marsden Honour Court & Welcome Centre (HC)
 Lumbers (LUM)
 McLaughlin College (MC)
-McLean Performance Studio (ACE)
-Nelson Road Lot
 Norman Bethune College (BC)
 Norman Bethune Residence (BR)
-North West Gate Lot – Subway Construction
-Northwest Gate Lot – Reserved
-Northwest Gate Lot – Visitors
-Observatory, Petrie (PSE)
 Osgoode Hall Law School, Ignat Kaneff Building (OSG)
 Passy Gardens (PASSY)
-Petrie Science &amp; Engineering (PSE)
+Petrie Science & Engineering (PSE)
 Physical Resources Building (PRB)
-Physical Resources Building South Visitor Lot
-Price Family Cinema (ACE)
 Ross Building (R)
 Sandra Faire & Ivan Fecan Theatre (ACE)
-Scott Library (SCL)
-Security Services
 Seneca @ York (SAY)
-Sentinel Road Lot
 Seymour Schulich Building (SSB)
 Sherman Health Science Research Centre (SHR)
-Shoreham Drive Lot
-Steacie Science & Engineering Library (STL)
+
 Stedman Lecture Halls (SLH)
 Stong Barn (SB)
 Stong College (SC)
 Stong House (SH)
 Stong Residence (SRC)
 Student Centre (STC)
-Student Services Parking Garage (SSP)
 Tait McKenzie Centre (TM)
 Tatham Hall (TH
 Technology Enhanced Learning (TEL)
-Temporary Road Construction for York University
-Temporary Welcome Centre
 Tennis Canada – Rexall Centre (REXL)
 The Pond Road Residence (PON)
-Thompson Road Lot
 Track & Field Centre (TFC)
 Tribute Communities Recital Hall (ACE)
-TTC Route 60
 Vanier College (VC)
 Vanier Residence (VR)
-Vanier Temporary Lot
 Vari Hall (VH)
-VIVA Transit – 1
-VIVA Transit – 2
 West Office Building (WOB)
-West Office Building East Lot
 William Small Centre (WSC)
 Winters College (WC)
 Winters Residence (WR)
-York – Village West Shuttle
 York Lanes (YL)
-York Lanes Parking Garage (YLP)
 York Stadium (STA)
 York Student Fieldhouse (YSF)
+
+<BUS STOP>
+York – Village West Shuttle
+VIVA Transit – 1
+VIVA Transit – 2
 YRT Stop 1017
 YRT Stop 1021
 YRT Stop 3627
@@ -123,3 +81,57 @@ YRT Stop 6285
 YRT Stop 8501
 YRT Stop 9715
 YRT Stop 9822
+TTC Route 60
+GO Transit – 1
+GO Transit – 2
+GO Transit – 3
+GO Transit – 4
+GO Transit – 5
+Brampton Transit – 1
+
+
+<PARKING>
+York Lanes Parking Garage (YLP)
+Vanier Temporary Lot
+West Office Building East Lot
+Physical Resources Building South Visitor Lot
+Thompson Road Lot
+Nelson Road Lot
+Albany Road Lot
+Atkinson Lot
+Founders Road East Lot
+Founders Road East Lot
+Founders Road West Lot
+Kinsmen Lot
+Sentinel Road Lot
+North West Gate Lot – Subway Construction
+Northwest Gate Lot – Reserved
+Northwest Gate Lot – Visitors
+Shoreham Drive Lot
+Arboretum Lane Parking Garage (ARB)
+Student Services Parking Garage (SSP)
+
+<GARBAGE>
+Construction Notice: Advanced Temporary Road Construction for York University Station
+Temporary Road Construction for York University
+Temporary Welcome Centre
+Bookstore – York Lanes (YL)
+
+<PLACES NOT BUILDINGS>
+Art Gallery of York University AGYU (ACE)
+Steacie Science & Engineering Library (STL)
+Scott Library (SCL)
+Security Services
+Gales Gallery (ACW)
+Information Kiosk
+Joseph Green Studio Theatre (CFT)
+McLean Performance Studio (ACE)
+Observatory, Petrie (PSE)
+Price Family Cinema (ACE)
+
+<DONT KNOW>
+190 Albany Road
+320 Assiniboine Road (AS2)
+340 Assiniboine Road (AS4)
+360 Assiniboine Road (AS6)
+380 Assiniboine Road (AS8)

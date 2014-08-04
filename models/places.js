@@ -27,7 +27,7 @@ var StudyAreaSchema = PlaceSchema.extend({
 
 var BuildingSchema = PlaceSchema.extend({
 	building_code: {type: String, unique: true},
-	building_cover_polygon: [
+	cover_polygon: [
 		{
 			lon: Number,
 			lat: Number
@@ -63,7 +63,13 @@ var RestaurantSchema = PlaceSchema.extend({
 
 var ParkingLotSchema = PlaceSchema.extend({
 	is_reserved: Boolean,
-	capacity: String
+	capacity: String,
+	cover_polygon: [
+		{
+			lon: Number,
+			lat: Number
+		}
+	]
 });
 
 var RecreationSchema = PlaceSchema.extend({

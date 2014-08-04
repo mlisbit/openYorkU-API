@@ -2,36 +2,50 @@
 <html>
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <style type="text/css">
-      html { height: 100% }
-      body { height: 100%; margin: 0; padding: 0 }
-      #map-canvas { height: 100% }
-      #panel {
-        position: absolute;
-        top: 5px;
-        left: 50%;
-        margin-left: -180px;
-        z-index: 5;
-        background-color: #fff;
-        padding: 5px;
-        border: 1px solid #999;
-      }
-    </style>
-    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKX3zUn--IcQJJtQ8BmwmHpVVQ_flnibM">
-    </script>
-    <script type="text/javascript" src="scripts/maps.js"></script>
+    <link rel="stylesheet" href="http://cdn.jsdelivr.net/foundation/5.3.1/css/foundation.min.css">
+    <link rel="stylesheet" href="styles/style.css">
+    
   </head>
+  <nav class="top-bar" data-topbar>
+	  <ul class="title-area">
+		<li class="name">
+		  <h1><a href="#">Map Plotter</a></h1>
+		</li>
+		 <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+		<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+	  </ul>
+
+	  <section class="top-bar-section">
+		<!-- Right Nav Section -->
+		<ul class="right">
+			<li><a onclick="toggleMarkers();" href="#">Toggle Markers</a></li>
+			<li><a onclick="deleteMarkers();" href="#">Delete Markers</a></li>
+			<li><a onclick="printMarkers();" href="#">Console Log Markers</a></li>
+		  
+		  <li class="has-dropdown">
+			<a href="#">Draw</a>
+			<ul class="dropdown">
+			  <li><a onclick="draw('restaurants')" href="#">Restaurants</a></li>
+			  <li><a onclick="draw('building_covers')" href="#">Building Covers</a></li>
+			  <li><a onclick="draw('building_location')" href="#">Building Location</a></li>
+			  <li><a onclick="draw('parking')" href="#">Parking</a></li>
+			  <li><a onclick="draw('recreational')" href="#">Recreational</a></li>
+			</ul>
+		  </li>
+		</ul>
+	  </section>
+	</nav>
+  
   <body>
-    <div id="panel">
-      <input onclick="clearMarkers();" type=button value="Hide Markers">
-      <input onclick="showMarkers();" type=button value="Show All Markers">
-      <input onclick="deleteMarkers();" type=button value="Delete Markers">
-      <input onclick="printMarkers();" type=button value="Print Markers">
-      <input onclick="redrawKnownMarkers();" type=button value="Re-draw Known Markers">
-      <input id="markit" type=checkbox name="markit" value="markit" checked>Mark on Click
-    </div>
     <div id="map-canvas"></div>
+    <div id="check-panel"><input id="markit" type=checkbox name="markit" value="markit" checked> Mark on Click</div>
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.3.1/js/foundation.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.3.1/js/foundation/foundation.topbar.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKX3zUn--IcQJJtQ8BmwmHpVVQ_flnibM"></script>
+    <script>$(document).foundation();</script>
+    <script src="scripts/locations.js"></script>
+    <script type="text/javascript" src="scripts/maps.js"></script>
+    
   </body>
 </html>

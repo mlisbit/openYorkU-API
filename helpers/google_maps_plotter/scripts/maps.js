@@ -3,6 +3,8 @@ var map;
 var markers = [];
 var boundries = "";
 
+var markers_showing = true
+
 //http://gmaps-samples-v3.googlecode.com/svn/trunk/styledmaps/wizard/index.html
 var styles = [
 	{
@@ -49,41 +51,14 @@ function initialize() {
 
 	// This event listener will call addMarker() when the map is clicked.
 	google.maps.event.addListener(map, 'click', function(event) {
-		addMarker(event.latLng);
+		if (document.getElementById('markit').checked) {
+			addMarker(event.latLng);
+		}
 	});
 	
-	readTextFile('restaurant_extended_list.txt', function(text) {
-		lines = text.split('\n')
-		for (i in lines) {
-			line_sections = lines[i].split(',')
-			console.log(line_sections[0].trim())
-			if (line_sections[1]) {
-				place_location = new google.maps.LatLng(parseFloat(line_sections[1]), parseFloat(line_sections[2]))
-				addMarker(place_location, line_sections[0].trim());
-			}
-		}
-	})
-
 	drawBoundries();
 }
 
-function readTextFile(file, fn) {
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = function ()
-    {
-        if(rawFile.readyState === 4)
-        {
-            if(rawFile.status === 200 || rawFile.status == 0)
-            {
-				if (typeof(fn) === 'function') {
-                	fn(rawFile.responseText)
-				}
-            }
-        }
-    }
-    rawFile.send(null);
-}
 
 function drawBoundries() {
 	var york_boundry_markers = [
@@ -126,9 +101,26 @@ function drawBoundries() {
 var iw = new google.maps.InfoWindow({
 	content: ''
 });
-
+function draw(type) {
+	if (type === 'restaurants') {
+		restaurants = new LocationPlotter({file: 'restaurant_extended_list.txt', type: 'restaurants'})
+		restaurants.add()
+	} else if (type === 'building_covers') {
+		restaurants = new LocationPlotter({file: 'restaurant_extended_list.txt', type: 'restaurants'})
+		restaurants.add()
+	} else if (type === 'building_location') {
+		restaurants = new LocationPlotter({file: 'restaurant_extended_list.txt', type: 'restaurants'})
+		restaurants.add()
+	} else if (type === 'parking') {
+		restaurants = new LocationPlotter({file: 'restaurant_extended_list.txt', type: 'restaurants'})
+		restaurants.add()
+	} else if (type === 'recreational') {
+		restaurants = new LocationPlotter({file: 'restaurant_extended_list.txt', type: 'restaurants'})
+		restaurants.add()
+	}
+}
 function addMarker(location, label) {
-	if (document.getElementById('markit').checked) {
+	
 		var marker = new google.maps.Marker({
 			position: location,
 			map: map,
@@ -140,10 +132,8 @@ function addMarker(location, label) {
 			iw.content = this.iw
 			iw.open(map, this); 
 		});
-		
-		console.dir(iw)
 		markers.push(marker);
-	}
+	
 }
 
 // Sets the map on all markers in the array.
@@ -153,14 +143,23 @@ function setAllMap(map) {
   }
 }
 
+function toggleMarkers() {
+	if (markers_showing) {
+		markers_showing = false;
+		setAllMap(map);
+	} else {
+		markers_showing = true;
+		setAllMap(null);
+	}
+}
 // Removes the markers from the map, but keeps them in the array.
 function clearMarkers() {
-  setAllMap(null);
+  
 }
 
 // Shows any markers currently in the array.
 function showMarkers() {
-  setAllMap(map);
+  
 }
 
 // Deletes all markers in the array by removing references to them.
