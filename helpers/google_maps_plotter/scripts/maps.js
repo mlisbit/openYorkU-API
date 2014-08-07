@@ -1,6 +1,7 @@
 var map;
 
 var markers = [];
+var building_covers = [];
 var boundries = "";
 
 var markers_showing = true
@@ -55,7 +56,14 @@ function initialize() {
 			addMarker(event.latLng);
 		}
 	});
-	
+	/*
+	addCover([
+		[43.774146212543805, -79.50135111808777],
+		[43.77490541344873, -79.50175881385803],	
+		[43.77460328363098, -79.50374364852905],
+		[43.77371237912779, -79.5034110546112],	
+	])
+	*/
 	drawBoundries();
 }
 
@@ -94,6 +102,7 @@ function drawBoundries() {
 		fillOpacity: 0.35
 	});
 
+	
 	shape.setMap(map);
 }
 // Add a marker to the map and push to the array.
@@ -101,15 +110,16 @@ function drawBoundries() {
 var iw = new google.maps.InfoWindow({
 	content: ''
 });
+
 function draw(type) {
 	if (type === 'restaurants') {
-		restaurants = new LocationPlotter({file: 'restaurant_extended_list.txt', type: 'restaurants'})
+		restaurants = new LocationPlotter({file: 'lists/restaurant_extended_list.txt', type: 'restaurants'})
 		restaurants.add()
 	} else if (type === 'building_covers') {
-		restaurants = new LocationPlotter({file: 'restaurant_extended_list.txt', type: 'restaurants'})
+		restaurants = new LocationPlotter({file: 'lists/building_list.txt', type: 'building_cover'})
 		restaurants.add()
 	} else if (type === 'building_location') {
-		restaurants = new LocationPlotter({file: 'restaurant_extended_list.txt', type: 'restaurants'})
+		restaurants = new LocationPlotter({file: 'lists/building_list.txt', type: 'building_location'}) 
 		restaurants.add()
 	} else if (type === 'parking') {
 		restaurants = new LocationPlotter({file: 'restaurant_extended_list.txt', type: 'restaurants'})
@@ -120,7 +130,6 @@ function draw(type) {
 	}
 }
 function addMarker(location, label) {
-	
 		var marker = new google.maps.Marker({
 			position: location,
 			map: map,
@@ -133,7 +142,19 @@ function addMarker(location, label) {
 			iw.open(map, this); 
 		});
 		markers.push(marker);
-	
+}
+
+function addCover(points) {
+	var temp_polygon = new google.maps.Polygon({
+		paths: points,
+		strokeColor: '#B40404',
+		strokeOpacity: 0.8,
+		strokeWeight: 2,
+		fillColor: '#FE2E2E',
+		fillOpacity: 0.35
+	})
+	building_covers.push(temp_polygon)
+	temp_polygon.setMap(map);
 }
 
 // Sets the map on all markers in the array.
@@ -164,11 +185,15 @@ function showMarkers() {
 
 // Deletes all markers in the array by removing references to them.
 function deleteMarkers() {
-  clearMarkers();
-  markers = [];
+	console.log("why arent i working?")
+	setAllMap(null);
+	markers = [];
 }
 
 function printMarkers() {
+	if (markers.length === 0) {
+		console.log("Sorry, nothing to be printed D':")
+	}
 	for (i in markers) {
 		console.log(markers[i].position.toString(), markers[i].iw)
 	}
