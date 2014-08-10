@@ -1,137 +1,67 @@
-Accolade East (ACE)
-Accolade West (ACW)
-Archives of Ontario (AO)
-Atkinson (ATK)
-Atkinson Residence (AR)
-Behavioural Science (BSB)
-Bennett Centre for Student Services / Admissions (BCSS)
-Burton Auditorium (BU)
-Calumet College (CC)
-Calumet Residence (CR)
-Canlan Ice Sports (ICE)
-Central Square (CSQ)
-Central Utilities Building (CUB)
-Centre for Film & Theatre (CFT)
-Chemistry (CB)
-Computer Methods Building (CMB)
-Curtis Lecture Halls (CLH)
-Executive Learning Centre (ELC)
-Farquharson Life Sciences (FRQ)
-Founders College (FC)
-Founders Residence (FR)
-Harry Sherman Crowe Housing Co-op (HCC)
-Hart House (HH)
-Health, Nursing & Environmental Studies (HNE)
-Hoover House (HOH)
-Ignat Kaneff Building, Osgoode Hall Law School (OSG)
-Joan & Martin Goldfarb Centre for Fine Arts (CFA)
-Kaneff Tower (KT)
-Kinsmen (K)
-Lassonde Building (LAS)
-Life Sciences Building (LSB)
-Lorna R. Marsden Honour Court & Welcome Centre (HC)
-Lumbers (LUM)
-McLaughlin College (MC)
-Norman Bethune College (BC)
-Norman Bethune Residence (BR)
-Osgoode Hall Law School, Ignat Kaneff Building (OSG)
-Passy Gardens (PASSY)
-Petrie Science & Engineering (PSE)
-Physical Resources Building (PRB)
-Ross Building (R)
-Sandra Faire & Ivan Fecan Theatre (ACE)
-Seneca @ York (SAY)
-Seymour Schulich Building (SSB)
-Sherman Health Science Research Centre (SHR)
-
-Stedman Lecture Halls (SLH)
-Stong Barn (SB)
-Stong College (SC)
-Stong House (SH)
-Stong Residence (SRC)
-Student Centre (STC)
-Tait McKenzie Centre (TM)
-Tatham Hall (TH
-Technology Enhanced Learning (TEL)
-Tennis Canada – Rexall Centre (REXL)
-The Pond Road Residence (PON)
-Track & Field Centre (TFC)
-Tribute Communities Recital Hall (ACE)
-Vanier College (VC)
-Vanier Residence (VR)
-Vari Hall (VH)
-West Office Building (WOB)
-William Small Centre (WSC)
-Winters College (WC)
-Winters Residence (WR)
-York Lanes (YL)
-York Stadium (STA)
-York Student Fieldhouse (YSF)
-
-<BUS STOP>
-York – Village West Shuttle
-VIVA Transit – 1
-VIVA Transit – 2
-YRT Stop 1017
-YRT Stop 1021
-YRT Stop 3627
-YRT Stop 3696
-YRT Stop 6284
-YRT Stop 6285
-YRT Stop 8501
-YRT Stop 9715
-YRT Stop 9822
-TTC Route 60
-GO Transit – 1
-GO Transit – 2
-GO Transit – 3
-GO Transit – 4
-GO Transit – 5
-Brampton Transit – 1
-
-
-<PARKING>
-York Lanes Parking Garage (YLP)
-Vanier Temporary Lot
-West Office Building East Lot
-Physical Resources Building South Visitor Lot
-Thompson Road Lot
-Nelson Road Lot
-Albany Road Lot
-Atkinson Lot
-Founders Road East Lot
-Founders Road East Lot
-Founders Road West Lot
-Kinsmen Lot
-Sentinel Road Lot
-North West Gate Lot – Subway Construction
-Northwest Gate Lot – Reserved
-Northwest Gate Lot – Visitors
-Shoreham Drive Lot
-Arboretum Lane Parking Garage (ARB)
-Student Services Parking Garage (SSP)
-
-<GARBAGE>
-Construction Notice: Advanced Temporary Road Construction for York University Station
-Temporary Road Construction for York University
-Temporary Welcome Centre
-Bookstore – York Lanes (YL)
-
-<PLACES NOT BUILDINGS>
-Art Gallery of York University AGYU (ACE)
-Steacie Science & Engineering Library (STL)
-Scott Library (SCL)
-Security Services
-Gales Gallery (ACW)
-Information Kiosk
-Joseph Green Studio Theatre (CFT)
-McLean Performance Studio (ACE)
-Observatory, Petrie (PSE)
-Price Family Cinema (ACE)
-
-<DONT KNOW>
-190 Albany Road
-320 Assiniboine Road (AS2)
-340 Assiniboine Road (AS4)
-360 Assiniboine Road (AS6)
-380 Assiniboine Road (AS8)
+Accolade East									,ACE	, 43.77286019718361, -79.49988126754761		, 43.77316620937004 & -79.50050488114357 | 43.77338312845252 & -79.49953392148018 | 43.77258033023719 & -79.49918925762177 | 43.772354692610534 & -79.50017228722572
+Accolade West 									,ACW	, 43.77259291943594, -79.5017158985138		, 
+Archives of Ontario								,AO		, 43.77492865414073, -79.50053036212921		,
+Atkinson 										,ATK	, 43.771043459683405, -79.50249910354614	,
+Atkinson Residence 								,AR		, 43.77130493383217, -79.50172394514084		,
+Behavioural Science 							,BSB	,											,
+Bennett Centre for Student Services / Admissions ,BCSS	,											,
+Burton Auditorium 								,BU		,											,		
+Calumet College 								,CC		, 43.77295703665247, -79.5095157623291		,
+Calumet Residence 								,CR		, 43.772224926379565, -79.50970888137817	,
+Canlan Ice Sports 								,ICE	, 43.774580042812545, -79.51379656791687	,
+Central Square 									,CSQ	, 43.77284276606259, -79.50489163398743		,
+Central Utilities Building 						,CUB	,											,
+Centre for Film & Theatre 						,CFT	,											,
+Chemistry 										,CB		, 43.773317278099924, -79.50785279273987	,
+Computer Methods Building 						,CMB	,											,
+Curtis Lecture Halls 							,CLH	, 43.77316233580783, -79.50520277023315		,
+Executive Learning Centre 						,ELC	,											,
+Farquharson Life Sciences 						,FRQ	, 43.774231429452115, -79.50453758239746	,
+Founders College 								,FC		,											,
+Founders Residence 								,FR		, 43.776158461206634, -79.50401186943054	,
+Harry Sherman Crowe Housing Co-op 				,HCC	,											,	
+Hart House 										,HH		,											,
+Health, Nursing & Environmental Studies 		,HNE	,											,		
+Hoover House 									,HOH	,											,
+Ignat Kaneff Building, Osgoode Hall Law School 	,OSG	,											,
+Joan & Martin Goldfarb Centre for Fine Arts 	,CFA	,											,
+Kaneff Tower 									,KT		,											,
+Kinsmen 										,K		,											,
+Lassonde Building 								,LAS	, 43.77392929622919, -79.50523495674133		,
+Life Sciences Building 							,LSB	, 43.77417720052451, -79.5078581571579		,
+Lorna R. Marsden Honour Court & Welcome Centre 	,HC		,											,
+Lumbers 										,LUM	, 43.77468849988797, -79.50496673583984		,
+McLaughlin College 								,MC		,											,
+Norman Bethune College 							,BC		, 43.773146841556546, -79.50889348983765	,
+Norman Bethune Residence 						,BR		, 43.77314877833817, -79.50844556093216		,
+Osgoode Hall Law School, Ignat Kaneff Building 	,OSG	,											,
+Passy Gardens 									,PASSY	,											,
+Petrie Science & Engineering 					,PSE	, 43.77362716147983, -79.50697302818298		,
+Physical Resources Building 					,PRB	,											,
+Ross Building 									,R		, 43.772674264963854, -79.50411915779114	,
+Sandra Faire & Ivan Fecan Theatre 				,ACE	,											,
+Seneca @ York 									,SAY	,											,
+Seymour Schulich Building 						,SSB	,											,
+Sherman Health Science Research Centre 			,SHR	, 43.775168807429, -79.51188683509827		,	
+Stedman Lecture Halls 							,SLH	, 43.77437862200773, -79.5031750202179		,
+Stong Barn 										,SB		,											,
+Stong College 									,SC		, 43.77279047266896, -79.50833022594452		,
+Stong House 									,SH		,											,
+Stong Residence 								,SRC	, 43.77243022804815, -79.50863063335419		,	
+Student Centre 									,STC	, 43.77389056109024, -79.50291752815247		,
+Tait McKenzie Centre 							,TM		, 43.77450257335253, -79.5095694065094		,
+Tatham Hall 									,TH		, 43.77710549224481, -79.50224697589874		,
+Technology Enhanced Learning 					,TEL	, 43.771357228524735, -79.50069665908813	,
+Tennis Canada – Rexall Centre 					,REXL	, 43.77154316483914, -79.51207995414734		,
+The Pond Road Residence 						,PON	, 43.77043141202119, -79.50165688991547		,
+Track & Field Centre 							,TFC	, 43.77658646686669, -79.5069408416748		,
+Vanier College 									,VC		, 43.775517415324906, -79.50220942497253	,
+Vanier Residence 								,VR		, 43.775416706585965, -79.50268685817719	,
+Vari Hall 										,VH		, 43.77268975933758, -79.50340032577515		, 43.77319622946854 & -79.50390256941319 | 43.773315341323745 & -79.50337283313274 | 43.77323205988896 & -79.50333461165428 | 43.77320736595285 & -79.50343318283558 | 43.77315652546408 & -79.50347609817982 | 43.77314393638398 & -79.50345128774643 | 43.7731274737368 & -79.50342245399952 | 43.77310665332355 & -79.50340367853642 | 43.77308341192349 & -79.50339026749134 | 43.77305193917981 & -79.5033822208643 | 43.77302337159814 & -79.50338691473007 | 43.77299577239611 & -79.50340233743191 | 43.7729672047876 & -79.50332723557949 | 43.77298899364277 & -79.50322732329369 | 43.772597277234865 & -79.50305700302124 | 43.77259291943594 & -79.50307309627533 | 43.77256241483443 & -79.50305834412575 | 43.77256580423538 & -79.50304426252842 | 43.7721726324457 & -79.50287461280823 | 43.772133896168896 & -79.50302615761757 | 43.77212614891055 & -79.50302079319954 | 43.77211937005864 & -79.50303956866264 | 43.77211210700219 & -79.50305968523026 | 43.77210581235255 & -79.5030777901411 | 43.77210145451779 & -79.50309254229069 | 43.77209612827489 & -79.50311131775379 | 43.772091770439424 & -79.5031300932169 | 43.772087896807626 & -79.50315088033676 | 43.77208353897157 & -79.50317233800888 | 43.7720801495433 & -79.503193795681 | 43.77207724431893 & -79.50321324169636 | 43.77207627591077 & -79.50324542820454 | 43.77208450737961 & -79.50325213372707 | 43.77205158149742 & -79.50340233743191 | 43.772858744590394 & -79.50375571846962 | 43.77285487100827 & -79.50376778841019 | 43.77311778982456 & -79.50388312339783 | 43.77311972660712 & -79.50386837124825
+West Office Building 							,WOB	,											,
+William Small Centre 							,WSC	, 43.77290280656923, -79.5076596736908		,
+Winters College 								,WC		, 43.77620300492492, -79.50257956981659		,
+Winters Residence 								,WR		, 43.776514810023976, -79.50115263462067	,
+York Lanes 										,YL		, 43.774314709495194, -79.50152814388275	,
+York Stadium 									,STA	,											,
+York Student Fieldhouse 						,YSF	,											,

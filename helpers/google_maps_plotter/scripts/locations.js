@@ -50,13 +50,15 @@ LocationPlotter.prototype.populate = function() {
 			} else if (this.type === 'building_cover') {
 				if (line_sections[4] && line_sections[4].trim()) {
 					points = line_sections[4].split('|')
+					var cover_holder = []
 					//var place_location = new google.maps.LatLng(parseFloat(line_sections[2]), parseFloat(line_sections[3]))
 					for (i in points) {
 						console.log('mauahahah', points[i])
 						var lat = points[i].split('&')[0]
 						var lng = points[i].split('&')[1]
-						this.location_points.push(new google.maps.LatLng(lat, lng));
+						cover_holder.push(new google.maps.LatLng(lat, lng));
 					}
+					this.location_points.push(cover_holder)
 				}
 			} else if (this.type === 'parking') {
 			
@@ -78,7 +80,7 @@ LocationPlotter.prototype.remove = function() {
 
 LocationPlotter.prototype.add = function() {
 	if (this.type === 'building_cover') {
-		addCover(this.location_points[i]);
+		addCover(this.location_points);
 	} else {
 		for (i in this.location_points) {
 			addMarker(this.location_points[i].point, this.location_points[i].name);

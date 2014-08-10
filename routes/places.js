@@ -4,11 +4,13 @@ var Place = place_model.Place;
 var Restaurant = place_model.Restaurant;
 
 //get
-exports.list = function(req, res, next){
-	Place.find({},function (err, places) {
-        res.status(200).send(places)
-    });
-};
+exports.list = function(type) {
+	return function(req, res, next){
+		place_model[type].find({},function (err, places) {
+        	res.status(200).send(places)
+    	});
+	};
+}
 
 //GET (should be DEL)
 exports.clear_db = function(req, res, next){

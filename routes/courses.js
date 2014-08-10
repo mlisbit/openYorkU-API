@@ -41,7 +41,6 @@ exports.list = function(req, res, next){
 				break;
 			default:
 				//handles queries with parameters
-				console.log('ive been hit', arguement_list, key);
 				var in_query = {}
 				in_query.$in = arguement_list.map(function(item) {
 					return parseInt(item, 10) || item

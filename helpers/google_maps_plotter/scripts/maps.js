@@ -44,7 +44,8 @@ function initialize() {
 	var mapOptions = {
 		zoom: 17,
 		center: york_campus,
-		styles:styles
+		styles:styles,
+		draggableCursor:'crosshair'
 	};
 	map = new google.maps.Map(document.getElementById('map-canvas'),
 	  	mapOptions
@@ -145,6 +146,7 @@ function addMarker(location, label) {
 }
 
 function addCover(points) {
+	console.log(points);
 	var temp_polygon = new google.maps.Polygon({
 		paths: points,
 		strokeColor: '#B40404',

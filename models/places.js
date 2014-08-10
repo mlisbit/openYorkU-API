@@ -2,10 +2,11 @@ var mongoose = require("mongoose")
 	, extend = require('mongoose-schema-extend');
 
 var Schema = mongoose.Schema;
+
 var PlaceSchema = new Schema({
 	campus	: {type: String, default: 'Keele'},
 	name 	: {type: String, unique: true},
-	building: String,
+	building: {type: mongoose.Schema.Types.ObjectId, ref: 'Building'},
 	location: {
 		lon: Number,
 		lat: Number
@@ -26,6 +27,7 @@ var StudyAreaSchema = PlaceSchema.extend({
 });
 
 var BuildingSchema = PlaceSchema.extend({
+	building_name: String,
 	building_code: {type: String, unique: true},
 	cover_polygon: [
 		{
@@ -97,6 +99,7 @@ Restaurant = mongoose.model('Restaurant', RestaurantSchema);
 Room = mongoose.model('Room', RoomSchema);
 StudyArea = mongoose.model('StudyArea', StudyAreaSchema);
 ArtArea = mongoose.model('ArtArea', ArtAreaSchema);
+Building = mongoose.model('Building', BuildingSchema);
 
 exports.Place = Place;
 exports.Restaurant = Restaurant;
@@ -104,3 +107,4 @@ exports.Library = Library;
 exports.Room = Room;
 exports.StudyArea = StudyArea;
 exports.ArtArea = ArtArea;
+exports.Building = Building;

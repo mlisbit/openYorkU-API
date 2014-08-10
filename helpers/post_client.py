@@ -114,11 +114,9 @@ def get_restaurant_db():
 							new_data['hours'][days[current]]['open'] = 'closed'
 							new_data['hours'][days[current]]['close'] = 'closed'
 					section_line = 0
-				new_data['tags'] = 'food'
-
-				result_post.append(new_data)
+					new_data['tags'] = 'food'
+					result_post.append(new_data)
 	return result_post
-
 
 def populate_subject_db():
 	for i in get_subject_db():	
@@ -133,12 +131,11 @@ def populate_course_db():
 			r = requests.put('http://127.0.0.1:1337/courses/', data=json.dumps(i), headers=headers)
 
 def populate_restaurant_db():
-	
 	for i in get_restaurant_db():	
+		print i['name'] + 'in building: ' + i['building']
 		r = requests.post('http://127.0.0.1:1337/places/restaurants', data=json.dumps(i), headers=headers)
 		if r.status_code != 200:
 			r = requests.put('http://127.0.0.1:1337/places/restaurants', data=json.dumps(i), headers=headers)
-		break;
 
 def test():
 	pass
@@ -169,8 +166,8 @@ def main(argv):
 				if (arg == 'test'):
 					print "just testing..."
 				if (arg == 'restaurant'):
-					print "just testing restaurants..."
-					print populate_restaurant_db()
+					print "Populating Restaurant db..."
+					populate_restaurant_db()
 					
 if __name__ == "__main__":
    main(sys.argv[1:])

@@ -75,11 +75,13 @@ app.put('/subjects', subjects.modify_subject);
 app.post('/subjects', subjects.add_subject);
 
 /* PLACES */
-app.get('/places', places.list);
+app.get('/places', places.list('Place'));
+app.get('/places/buildings', places.list('Building'));
+app.get('/places/restaurants', places.list('Restaurant'));
+
 app.get('/places/del', places.clear_db);
 app.post('/places/restaurants', places.add_restaurant);
 app.post('/places/buildings', places.add_building);
-
 
 
 http.createServer(app).listen(app.get('port'), function(){
