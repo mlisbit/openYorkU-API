@@ -5,8 +5,8 @@ var Schema = mongoose.Schema;
 
 var PlaceSchema = new Schema({
 	campus	: {type: String, default: 'Keele'},
-	name 	: {type: String, unique: true},
-	building: {type: mongoose.Schema.Types.ObjectId, ref: 'Building'},
+	name 	: {type: String},
+	building: String,
 	location: {
 		lon: Number,
 		lat: Number
@@ -26,21 +26,22 @@ var StudyAreaSchema = PlaceSchema.extend({
 	capacity: String
 });
 
-var BuildingSchema = PlaceSchema.extend({
-	building_name: String,
-	building_code: {type: String, unique: true},
+var BuildingSchema = new Schema({
+	name: String,
+	building_code: {type: String},
 	cover_polygon: [
 		{
 			lon: Number,
 			lat: Number
 		}
 	],
-	building_gps: {
+	location: {
 		lon: Number,
 		lat: Number
 	},
-	year_built: String,
+	year_built: Number,
 	history: String,
+
 	restaurants: [{type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant'}],
 	rooms: [{type: mongoose.Schema.Types.ObjectId, ref: 'Room'}],
 	libraries: [{type: mongoose.Schema.Types.ObjectId, ref: 'Library'}],
@@ -48,7 +49,12 @@ var BuildingSchema = PlaceSchema.extend({
 	art_areas: [{type: mongoose.Schema.Types.ObjectId, ref: 'ArtArea'}],
 });
 
-var RestaurantSchema = PlaceSchema.extend({
+var RestaurantSchema = new Schema({
+	building: String,
+	location: {
+		lon: Number,
+		lat: Number
+	},
 	tags	: [String],
 	hours 	: {
 		monday		: {open: String, close: String},

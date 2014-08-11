@@ -22,6 +22,7 @@ exports.clear_db = function(req, res, next){
 //post
 exports.add_restaurant = function(req, res, next){
 	var instance = new Restaurant(req.body);
+	console.log(instance)
 	instance.save(function(err) {
 		if (err) {
 			next(err);
@@ -32,7 +33,8 @@ exports.add_restaurant = function(req, res, next){
 
 //post
 exports.add_building = function(req, res, next){
-	var instance = new Restaurant(req.body);
+	var instance = new Building(req.body);
+	console.log(req.body)
 	instance.save(function(err) {
 		if (err) {
 			next(err);

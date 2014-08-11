@@ -23,6 +23,23 @@ subject_data_template = {
 	'title': ''
 }
 
+building_data_template = {
+	'name': '',
+	'building_code': '',
+	'cover_polygon': [
+		{
+			'lon': 0,
+			'lat': 0
+		}
+	],
+	'location': {
+		'lon': 0,
+		'lat': 0
+	},
+	'year_built': 0,
+	'history': '',
+}
+
 restaurant_data_template = {
 	'name'		: '',
 	'telephone'	: '',
@@ -118,6 +135,54 @@ def get_restaurant_db():
 					result_post.append(new_data)
 	return result_post
 
+'''
+building_data_template = {
+	'name': '',
+	'building_code': '',
+	'cover_polygon': [
+		{
+			'lon': 0,
+			'lat': 0
+		}
+	],
+	'location': {
+		'lon': 0,
+		'lat': 0
+	},
+	'year_built': 0,
+	'history': '',
+}
+'''
+def get_building_db():
+	result_post=[]
+	with open('txt_files/building_list.txt', 'rU') as f:
+		for line in f:
+			if line.strip():
+				
+				new_data = copy.deepcopy(building_data_template)
+				sections = line.split(',')
+				
+				new_data['name'] = sections[0].strip()
+				new_data['building_code'] = sections[1].strip()
+				try:
+					new_data['location']['lon'] = sections[2].strip()
+					new_data['location']['lat'] = sections[3].strip()
+				except:
+					pass
+				try:
+					
+					for i in sections[4].split('|'):
+						temp_coord = {'lon': 0, 'lat': 0}
+						temp_coord['lon'] = i.split('&')[0].strip()
+						temp_coord['lat'] = i.split('&')[1].strip()
+						new_data['cover_polygon'].append(temp_coord)
+				except:
+					pass
+				#new_data['cover_polygon'] = sections[1].strip()
+				#new_data['building_code'] = sections[1].strip()
+				result_post.append(new_data)
+	return result_post
+
 def populate_subject_db():
 	for i in get_subject_db():	
 		r = requests.post('http://127.0.0.1:1337/subjects/', data=json.dumps(i), headers=headers)
@@ -132,10 +197,17 @@ def populate_course_db():
 
 def populate_restaurant_db():
 	for i in get_restaurant_db():	
-		print i['name'] + 'in building: ' + i['building']
+		print i['name'] + ' in building: ' + i['building']
 		r = requests.post('http://127.0.0.1:1337/places/restaurants', data=json.dumps(i), headers=headers)
 		if r.status_code != 200:
 			r = requests.put('http://127.0.0.1:1337/places/restaurants', data=json.dumps(i), headers=headers)
+
+def populate_building_db():
+	for i in get_building_db():	
+		#print i['name'] + 'in building: ' + i['building']
+		r = requests.post('http://127.0.0.1:1337/places/buildings', data=json.dumps(i), headers=headers)
+		if r.status_code != 200:
+			r = requests.put('http://127.0.0.1:1337/places/buildings', data=json.dumps(i), headers=headers)
 
 def test():
 	pass
@@ -163,9 +235,10 @@ def main(argv):
 				if (arg == 'subjects'):
 					print "Populating Subjects db..."
 					populate_subject_db()
-				if (arg == 'test'):
-					print "just testing..."
-				if (arg == 'restaurant'):
+				if (arg == 'buildings'):
+					print "Populating Building db..."
+					populate_building_db()
+				if (arg == 'restaurants'):
 					print "Populating Restaurant db..."
 					populate_restaurant_db()
 					
