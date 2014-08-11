@@ -114,7 +114,7 @@ def get_restaurant_db():
 					new_data['name'] = line.strip()
 					section_line += 1
 				elif (section_line == 1):
-					new_data['building'] = line.strip()
+					new_data['building'] = line.split(',')[1].strip()
 					section_line += 1
 				elif (section_line == 2):
 					new_data['telephone'] = line.strip()
@@ -178,8 +178,6 @@ def get_building_db():
 						new_data['cover_polygon'].append(temp_coord)
 				except:
 					pass
-				#new_data['cover_polygon'] = sections[1].strip()
-				#new_data['building_code'] = sections[1].strip()
 				result_post.append(new_data)
 	return result_post
 

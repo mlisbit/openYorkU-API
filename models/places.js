@@ -4,13 +4,7 @@ var mongoose = require("mongoose")
 var Schema = mongoose.Schema;
 
 var PlaceSchema = new Schema({
-	campus	: {type: String, default: 'Keele'},
-	name 	: {type: String},
-	building: String,
-	location: {
-		lon: Number,
-		lat: Number
-	}
+	
 }, { collection : 'places', discriminatorKey : '_type' });
 
 var LibrarySchema = PlaceSchema.extend({
@@ -28,20 +22,20 @@ var StudyAreaSchema = PlaceSchema.extend({
 
 var BuildingSchema = new Schema({
 	name: String,
-	building_code: {type: String},
+	campus	: {type: String, default: 'Keele'},
+	location: {
+		lon: Number,
+		lat: Number
+	},
+	building_code: {type: String, unique: true},
 	cover_polygon: [
 		{
 			lon: Number,
 			lat: Number
 		}
 	],
-	location: {
-		lon: Number,
-		lat: Number
-	},
 	year_built: Number,
 	history: String,
-
 	restaurants: [{type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant'}],
 	rooms: [{type: mongoose.Schema.Types.ObjectId, ref: 'Room'}],
 	libraries: [{type: mongoose.Schema.Types.ObjectId, ref: 'Library'}],
@@ -50,11 +44,13 @@ var BuildingSchema = new Schema({
 });
 
 var RestaurantSchema = new Schema({
-	building: String,
+	name: String,
+	campus	: {type: String, default: 'Keele'},
 	location: {
 		lon: Number,
 		lat: Number
 	},
+	building: {type: mongoose.Schema.Types.ObjectId, ref: 'Building'},
 	tags	: [String],
 	hours 	: {
 		monday		: {open: String, close: String},
