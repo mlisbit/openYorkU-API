@@ -17,38 +17,60 @@ var places = require('./routes/places');
 //include mocha
 
 mongoose.connect('mongodb://localhost/openyorku', function(err) {
-	if (!err) {
-		console.log("connected to mongodb");
-	} else {
-		throw err;
-	}
-});
+		if (!err) {
+			console.log("connected to mongodb");
+		} else {
+			throw err;
+		}
+	});
 
 var app = express();
 
 // all environments
 app.set('port', process.env.PORT || 1337);
+app.configure(function() {
+	app.use(express.favicon(__dirname + '/public/favicon.ico'));
+	app.use(express.logger('dev'));
+	app.use(express.json());
+	app.use(express.urlencoded());
+	app.use(express.methodOverride());
+	app.use(express.cookieParser('a_secret_key'));
+	app.use(express.session());
+	app.use(app.router);
+	app.use(function api_ify(err, req, res, next) {
+		output_template = {
+			meta: {
 
-app.use(express.favicon(__dirname + '/public/favicon.ico'));
-app.use(express.logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(express.methodOverride());
-app.use(express.cookieParser('a_secret_key'));
-app.use(express.session());
-app.use(app.router);
-app.use(function api_ify(err, req, res, next) {
-	output_template = {
-		meta: {
+			},
+			data: [
 
-		},
-		data: [
-
-		]
-	}
-	res.send('ERROR')
-	console.log('ERROR', err);
+			]
+		}
+		res.send('ERROR')
+		console.log('ERROR', err);
+	})
 })
+
+app.configure('development', function() {
+	console.log("DEVELOPMENT!");
+	
+});
+app.configure('production', function() {
+	console.log("PRODUCTION");
+});
+app.configure('test', function() {
+	console.log("TESTING!")
+	mongoose.connect('mongodb://localhost/testing-testing-testing', function(err) {
+		if (!err) {
+			console.log("connected to mongodb");
+		} else {
+			throw err;
+		}
+	});
+})
+//create a proper error middleware, 
+//create a logger middleware,
+//create a user authentication middleware, including API keys
 
 docs(app, mongoose);
 
@@ -82,6 +104,8 @@ app.get('/places/restaurants', places.list('Restaurant'));
 app.get('/places/del', places.clear_db);
 app.post('/places/restaurants', places.add_restaurant);
 app.post('/places/buildings', places.add_building);
+
+/* USERS */
 
 
 http.createServer(app).listen(app.get('port'), function(){

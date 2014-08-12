@@ -6,13 +6,6 @@ var Building = place_model.Building;
 
 //get
 exports.list = function(type) {
-	/*
-		place_model[type].find({},function (err, places) {
-        	res.status(200).send(places)
-    	});
-	};
-	*/
-
 	return function(req, res, next){
 		var q 			= req.query
 			, args 		= {}

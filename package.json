@@ -12,5 +12,11 @@
     "winston": "*",
     "express-mongoose-docs": "*",
     "mongoose-schema-extend": "*"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "scripts": {
+    "test": "mocha"
   }
 }
