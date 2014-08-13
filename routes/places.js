@@ -60,7 +60,7 @@ exports.list = function(type) {
 				if (err) {
 					next(err)
 				}
-	        	res.status(200).send(results)
+	        	next({data: results})
 	    	});
 	} //return function
 }
@@ -69,7 +69,7 @@ exports.list = function(type) {
 exports.clear_db = function(req, res, next){
 	Place.remove();
 	Building.remove(function(err) {
-		res.send("removed database successfully.")
+		next({message: "removed database successfully."})
 	});
 };
 
@@ -84,9 +84,9 @@ exports.add_restaurant = function(req, res, next){
 
         instance.save(function(err) {
 			if (err) {
-				next(err);
+				next({err:err});
 			}
-			res.send("added a restaurant!");	
+			next({message: "added a restaurant!"});	
 		});
     });
 	
@@ -99,6 +99,6 @@ exports.add_building = function(req, res, next){
 		if (err) {
 			next(err);
 		}
-		res.send("added a building!");	
+		next({message: "added a building!"});	
 	});
 };

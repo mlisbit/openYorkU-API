@@ -50,29 +50,33 @@ exports.list = function(req, res, next){
 	} //for
 
 	Course.find(args, fields, { limit : limit , skip: offset},function (err, courses) {
-        res.status(200).send(courses)
+        next({data: courses, err: err})
     });
 };
 
 //post
 exports.add_course = function(req, res, next){
 	var instance = new Course(req.body);
-	//console.log(req.body);
 	instance.save(function(err) {
 		if (err) {
-			next(err);
+			next({err: err});
 		}
-		res.send("add a course!");	
+		next({message: "course successfully added."})	
+		
 	});
 }
 
 exports.clear_db = function(req, res, next){
 	Course.remove(function(err) {
-		res.send("removed database successfully.")
+		if (err) {
+			next({err: err})
+		}
+		next({message: "removed database successfully."})	
 	});
 }
 
 exports.modify_course = function(req, res, next){
+	//next({data: "Successfully changed document", err: err})	
 	var update_fields= {
 		credit_count: req.body.credit_count, 
 		term_years_offered: req.body.term_years_offered,
@@ -84,11 +88,13 @@ exports.modify_course = function(req, res, next){
 	if (!req.body.faculty) {delete update_fields.faculty};
 	if (!req.body.instructors) {delete update_fields.instructors};
 
-	Course.update({course_code: req.body.course_code
-	}, {$addToSet: update_fields}, function(err) {
-		if (err) { next(err); }
-		res.status(200).send("Successfully changed document")
-	});
+	Course.
+	update({course_code: req.body.course_code}, 
+		{$addToSet: update_fields}, 
+		function(err) {
+			if (err) { next({err: err}); }
+			next({message: "Successfully changed document"})	
+		});
 }
 
 exports.show_course = function(req, res, next){

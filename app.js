@@ -32,17 +32,25 @@ app.configure(function() {
 	app.use(express.cookieParser('a_secret_key'));
 	app.use(express.session());
 	app.use(app.router);
-	app.use(function api_ify(err, req, res, next) {
-		output_template = {
+	app.use(function api_ify(data, req, res, next) {
+		var output = {
 			meta: {
-
+				status: 0,
+				timestamp: 0,
+				message: '',
 			},
-			data: [
-
-			]
+			data: {}
 		}
-		res.send('ERROR')
-		console.log('ERROR', err);
+
+		if (data.err) {
+			output.meta.message = "there has been an error D:"
+			output.meta.status = 400;
+		} else {
+			output.meta.status = data.status || 200;
+			output.meta.message = data.message || "Request successful";
+			output.data = data.data || {}
+		}
+		res.status(output.meta.status).json(output)
 	})
 })
 

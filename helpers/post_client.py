@@ -189,14 +189,10 @@ def populate_subject_db():
 
 def populate_course_db():
 	for i in get_course_db():	
-		print i
-		break
-	'''
-	for i in get_course_db():	
 		r = requests.post('http://127.0.0.1:1337/courses/', data=json.dumps(i), headers=headers)
-		if r.status_code != 200:
-			r = requests.put('http://127.0.0.1:1337/courses/', data=json.dumps(i), headers=headers)
-	'''
+		
+		break;
+	
 def populate_restaurant_db():
 	for i in get_restaurant_db():	
 		print i['name'] + ' in building: ' + i['building']
