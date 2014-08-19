@@ -25,30 +25,30 @@ var UserSchema = new Schema({
 
 var APIKeySchema = new Schema({
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    key: String,
+    key: {type: String, unique: true},
     max_requests: Number,
     experation_date: Date,
     permissions: {
     	get: {
-    		courses: Boolean,
-    		faculties: Boolean,
-    		places: Boolean,
-    		subjects: Boolean,
-    		users: Boolean
+    		courses: {type: Boolean, default: true},
+    		faculties: {type: Boolean, default: true},
+    		places: {type: Boolean, default: true},
+    		subjects: {type: Boolean, default: true},
+    		users: {type: Boolean, default: true},
     	},
     	put: {
-    		courses: Boolean,
-    		faculties: Boolean,
-    		places: Boolean,
-    		subjects: Boolean,
-    		users: Boolean
+    		courses: {type: Boolean, default: false},
+    		faculties: {type: Boolean, default: false},
+    		places: {type: Boolean, default: false},
+    		subjects: {type: Boolean, default: false},
+    		users: {type: Boolean, default: false},
     	},
     	del: {
-    		courses: Boolean,
-    		faculties: Boolean,
-    		places: Boolean,
-    		subjects: Boolean,
-    		users: Boolean
+    		courses: {type: Boolean, default: false},
+    		faculties: {type: Boolean, default: false},
+    		places: {type: Boolean, default: false},
+    		subjects: {type: Boolean, default: false},
+    		users: {type: Boolean, default: false},
     	}
     }
 });
@@ -61,7 +61,7 @@ var CourseRatingSchema = new Schema({
 
 
 User = mongoose.model('User', UserSchema);
-API = mongoose.model('API', APIKeySchema);
+API_Key = mongoose.model('API_Key', APIKeySchema);
 
 exports.User = User;
-exports.API = API;
+exports.API_Key = API_Key;

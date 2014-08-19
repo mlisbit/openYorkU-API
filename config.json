@@ -1,0 +1,14 @@
+{
+	"server_options": {
+		"port": 1337,
+		"cookie_parser_secret": "i_know_this_is_public"
+	},
+
+	"development_options": {
+		"ignore_api_key": false
+	},
+
+	"logging_options": {
+		"error_log": "./errors.log"
+	}
+}

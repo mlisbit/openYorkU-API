@@ -7,9 +7,9 @@ var mongoose = require("mongoose");
 var mongo = require("mongodb")
 var docs = require("express-mongoose-docs");
 
-var errors = require("./errors/errors")
+var errors = require("./errors/errors");
 
-var my_middleware = require("./middleware")
+var my_middleware = require("./middleware");
 
 /* ROUTES */
 var courses = require('./routes/courses');
@@ -20,31 +20,24 @@ var index = require('./routes/index');
 
 //include winston
 //include underscore
-//include mocha
 
-
+var my_conf = require('./config.json');
 
 var app = express();
 // all environments
-app.set('port', process.env.PORT || 1337);
+app.set('port', process.env.PORT || my_conf.server_options.port);
 app.configure(function() {
 	app.use(express.favicon(__dirname + '/public/favicon.ico'));
 	app.use(express.logger('dev'));
 	app.use(express.json());
 	app.use(express.urlencoded());
 	app.use(express.methodOverride());
-	app.use(express.cookieParser('a_secret_key'));
+	app.use(express.cookieParser(my_conf.server_options.cookie_parser_secret));
 	app.use(express.session());
 	app.use(app.router);
-	app.use(function permissions(data, req, res, next) {
-		if (false) {
-			next({err: new Error('Invalid API Key')})
-		} else {
-			next(data)
-		}
-	});
+	app.use(my_middleware.permissions);
 	app.use(my_middleware.counter);
-	app.use(my_middleware.api_ify)
+	app.use(my_middleware.api_ify);
 })
 
 app.configure('test', function() {
@@ -100,7 +93,8 @@ app.get('/', index.index);
 app.get('/help', index.index);
 app.get('/env', index.env);
 app.get('/err', index.provoke_error('duplicate'));
-
+app.get('/add_key', index.add_api_key);
+app.get('/list_keys', index.list_api_keys);
 
 /* COURSES */
 app.get('/courses', courses.list);
