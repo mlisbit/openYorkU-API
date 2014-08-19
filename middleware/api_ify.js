@@ -1,4 +1,4 @@
-exports.api_ify = function(data, req, res, next) {
+exports.api_ify =function api_ify(data, req, res, next) {
 	var output = {
 		meta: {
 			status: 0,

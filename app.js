@@ -37,37 +37,14 @@ app.configure(function() {
 	app.use(express.session());
 	app.use(app.router);
 	app.use(function permissions(data, req, res, next) {
-		if (true) {
+		if (false) {
 			next({err: new Error('Invalid API Key')})
 		} else {
 			next(data)
 		}
 	});
-	//app.use(my_middleware.counter());
-	app.use(function api_ify(data, req, res, next) {
-		var output = {
-			meta: {
-				status: 0,
-				timestamp: 0,
-				message: '',
-			},
-			data: {}
-		}
-
-		if (data.err) {
-			var temp_output = errors.handle(data.err)
-			output.meta.message = temp_output.message || data.err.toString()
-			output.meta.suggestion = temp_output.suggestion
-			output.meta.detail = temp_output.detail || data.err
-
-			output.meta.status = 400;
-		} else {
-			output.meta.status = data.status || 200;
-			output.meta.message = data.message || "Request successful";
-			output.data = data.data || {}
-		}
-		res.status(output.meta.status).json(output)
-	})
+	app.use(my_middleware.counter);
+	app.use(my_middleware.api_ify)
 })
 
 app.configure('test', function() {
