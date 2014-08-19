@@ -62,7 +62,6 @@ exports.add_course = function(req, res, next){
 			next({err: err});
 		}
 		next({message: "course successfully added."})	
-		
 	});
 }
 

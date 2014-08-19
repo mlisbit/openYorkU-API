@@ -7,6 +7,10 @@ var mongoose = require("mongoose");
 var mongo = require("mongodb")
 var docs = require("express-mongoose-docs");
 
+var errors = require("./errors/errors")
+
+var my_middleware = require("./middleware")
+
 /* ROUTES */
 var courses = require('./routes/courses');
 var faculties = require('./routes/faculties');
@@ -32,6 +36,14 @@ app.configure(function() {
 	app.use(express.cookieParser('a_secret_key'));
 	app.use(express.session());
 	app.use(app.router);
+	app.use(function permissions(data, req, res, next) {
+		if (true) {
+			next({err: new Error('Invalid API Key')})
+		} else {
+			next(data)
+		}
+	});
+	//app.use(my_middleware.counter());
 	app.use(function api_ify(data, req, res, next) {
 		var output = {
 			meta: {
@@ -43,7 +55,11 @@ app.configure(function() {
 		}
 
 		if (data.err) {
-			output.meta.message = "there has been an error D:"
+			var temp_output = errors.handle(data.err)
+			output.meta.message = temp_output.message || data.err.toString()
+			output.meta.suggestion = temp_output.suggestion
+			output.meta.detail = temp_output.detail || data.err
+
 			output.meta.status = 400;
 		} else {
 			output.meta.status = data.status || 200;
@@ -106,6 +122,7 @@ docs(app, mongoose);
 app.get('/', index.index);
 app.get('/help', index.index);
 app.get('/env', index.env);
+app.get('/err', index.provoke_error('duplicate'));
 
 
 /* COURSES */

@@ -75,6 +75,7 @@ exports.clear_db = function(req, res, next){
 
 //post
 exports.add_restaurant = function(req, res, next){
+	//first find the building this restaurant says its in.
 	Building.findOne({building_code: req.body.building},function (err, building) {
 		if (err) {
 			next(err);
