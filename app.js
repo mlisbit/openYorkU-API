@@ -94,6 +94,7 @@ app.get('/help', index.index);
 app.get('/env', index.env);
 app.get('/err', index.provoke_error('duplicate'));
 app.get('/add_key', index.add_api_key);
+app.get('/time', index.time)
 app.get('/list_keys', index.list_api_keys);
 
 /* COURSES */
@@ -119,7 +120,10 @@ app.get('/places', places.list('Place'));
 app.get('/places/buildings', places.list('Building'));
 app.get('/places/restaurants', places.list('Restaurant'));
 
-app.get('/places/del', places.clear_db);
+app.get('/places/buildings/del', places.clear_db('Building'));
+app.get('/places/restaurants/del', places.clear_db('Restaurant'));
+
+app.get('/places/del', places.clear_db());
 app.post('/places/restaurants', places.add_restaurant);
 app.post('/places/buildings', places.add_building);
 

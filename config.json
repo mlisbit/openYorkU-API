@@ -5,7 +5,7 @@
 	},
 
 	"development_options": {
-		"ignore_api_key": false
+		"ignore_api_key": true
 	},
 
 	"logging_options": {

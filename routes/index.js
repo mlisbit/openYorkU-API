@@ -59,3 +59,7 @@ exports.list_api_keys = function(req, res, next) {
 		next({data: api_keys})
 	})
 }
+
+exports.time = function(req, res, next) {
+	next({data: new Date()})
+}

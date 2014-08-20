@@ -53,17 +53,23 @@ var RestaurantSchema = new Schema({
 	building: {type: mongoose.Schema.Types.ObjectId, ref: 'Building'},
 	tags	: [String],
 	hours 	: {
+		sunday		: {open: String, close: String},
 		monday		: {open: String, close: String},
 		tuesday		: {open: String, close: String},
 		wednesday	: {open: String, close: String},
 		thursday	: {open: String, close: String},
 		friday		: {open: String, close: String},
-		saturday	: {open: String, close: String},
-		sunday		: {open: String, close: String}
+		saturday	: {open: String, close: String}
 	},
 	logo_url: String,
 	serves_booze: Boolean
 });
+
+RestaurantSchema.static.findStillOpen = function (cb) {
+	var current_date = new Date();
+	cb(current_date.getHours())
+}
+
 
 var ParkingLotSchema = PlaceSchema.extend({
 	is_reserved: Boolean,
