@@ -5,7 +5,7 @@
 ####Why is this being built?
 York University is the 3rd largest university in Canada, and with the recent addition of Lassonde school of Engineering - it's about time something like this existed. Though I doubt openYorkU will become officially adapted, I hope York will see the potential and allow for easier access to their information.
 
-With open data, students may create brilliant apps around it, and profs will have a large data set to work with and discover things otherwise overlooked. Tying this type of service around clubs, news and events; information to travel faster throughout the campus. The world will become aware of all the great things York University offers.
+With open data, students may create brilliant apps around it, and profs will have a large data set to work with and discover things otherwise overlooked. Tying this type of service around clubs, news and events; information will travel faster throughout the campus. The world will become aware of all the great things York University offers.
 
 ####Universities with API's of their own.
   * [Waterloo University](https://github.com/uWaterloo/api-documentation)
