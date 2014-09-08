@@ -1,5 +1,4 @@
-var mongoose = require("mongoose")
-	, extend = require('mongoose-schema-extend');
+var mongoose = require("mongoose");
 
 var Schema = mongoose.Schema;
 
