@@ -18,7 +18,7 @@ var subjects = require('./routes/subjects');
 var places = require('./routes/places');
 var index = require('./routes/index');
 
-var db_connection = 'mongodb://localhost/openyorku-testing'
+var db_connection = 'mongodb://localhost/openyorku'
 
 //include winston
 //include underscore
@@ -66,12 +66,7 @@ app.configure('test', function() {
 		}) //mongoose drop
 	}
 
-	if (process.env.DATABASE_URL) {
-		console.log("database URL set : " + process.env.DATABASE_URL)
-		db_connection = process.env.DATABASE_URL
-	}
-
-	mongoose.connect(process.env.DATABASE_URL, function(err) {
+	mongoose.connect('mongodb://localhost/openyorku-testing', function(err) {
 		var total_dbs = Object.keys(mongoose.connection.collections).length;
 		clearDB(total_dbs, function() {
 			console.log('cleared all dbs!')
@@ -81,7 +76,13 @@ app.configure('test', function() {
 
 app.configure('development', function() {
 	console.log('DEVELOPMENT')
-	mongoose.connect('mongodb://localhost/openyorku', function(err) {
+
+	if (process.env.DATABASE_URL) {
+		console.log("database URL set : " + process.env.DATABASE_URL)
+		db_connection = process.env.DATABASE_URL
+	}
+
+	mongoose.connect(db_connection, function(err) {
 		if (!err) { console.log("connected to mongodb") } else { throw err; }
 	});
 });
