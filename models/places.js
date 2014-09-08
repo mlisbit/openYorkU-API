@@ -6,16 +6,16 @@ var PlaceSchema = new Schema({
 	
 }, { collection : 'places', discriminatorKey : '_type' });
 
-var LibrarySchema = PlaceSchema.extend({
+var LibrarySchema = new Schema({
 	
 });
 
-var RoomSchema = PlaceSchema.extend({
+var RoomSchema = new Schema({
 	room_number: String,
 	capacity: String
 });
 
-var StudyAreaSchema = PlaceSchema.extend({
+var StudyAreaSchema = new Schema({
 	capacity: String
 });
 
@@ -70,7 +70,7 @@ RestaurantSchema.static.findStillOpen = function (cb) {
 }
 
 
-var ParkingLotSchema = PlaceSchema.extend({
+var ParkingLotSchema = new Schema({
 	is_reserved: Boolean,
 	capacity: String,
 	cover_polygon: [
@@ -81,19 +81,19 @@ var ParkingLotSchema = PlaceSchema.extend({
 	]
 });
 
-var RecreationSchema = PlaceSchema.extend({
+var RecreationSchema = new Schema({
 	intended_purpose: String
 });
 
-var ParkingGarageSchema = PlaceSchema.extend({
+var ParkingGarageSchema = new Schema({
 	capacity: String
 });
 
-var BusStopSchema = PlaceSchema.extend({
+var BusStopSchema = new Schema({
 	bus_servicer: String
 });
 
-var ArtAreaSchema = PlaceSchema.extend({
+var ArtAreaSchema = new Schema({
 	is_exhibit: Boolean,
 	is_theater: Boolean,
 	is_art_peice: Boolean,
