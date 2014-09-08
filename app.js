@@ -77,12 +77,13 @@ app.configure('test', function() {
 app.configure('development', function() {
 	console.log('DEVELOPMENT')
 
-	if (process.env.DATABASE_URL) {
+	if (process.env.MONGOHQ_URL) {
+		//configuration for heroku.
 		console.log("database URL set : " + process.env.DATABASE_URL)
-		db_connection = process.env.DATABASE_URL
+		db_connection = process.env.MONGOHQ_URL
 	}
 
-	mongoose.connect(process.env.DATABASE_URL, function(err) {
+	mongoose.connect(db_connection, function(err) {
 		if (!err) { console.log("connected to mongodb") } else { throw err; }
 	});
 });
