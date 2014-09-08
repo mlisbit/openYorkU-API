@@ -82,7 +82,7 @@ app.configure('development', function() {
 		db_connection = process.env.DATABASE_URL
 	}
 
-	mongoose.connect(db_connection, function(err) {
+	mongoose.connect(process.env.DATABASE_URL, function(err) {
 		if (!err) { console.log("connected to mongodb") } else { throw err; }
 	});
 });
