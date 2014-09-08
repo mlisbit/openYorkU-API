@@ -18,6 +18,8 @@ var subjects = require('./routes/subjects');
 var places = require('./routes/places');
 var index = require('./routes/index');
 
+var db_connection = 'mongodb://localhost/openyorku-testing'
+
 //include winston
 //include underscore
 
@@ -64,7 +66,11 @@ app.configure('test', function() {
 		}) //mongoose drop
 	}
 
-	mongoose.connect('mongodb://localhost/openyorku-testing', function(err) {
+	if (process.env.DATABASE_URL) {
+		db_connection = process.env.DATABASE_URL
+	}
+	
+	mongoose.connect(process.env.DATABASE_URL, function(err) {
 		var total_dbs = Object.keys(mongoose.connection.collections).length;
 		clearDB(total_dbs, function() {
 			console.log('cleared all dbs!')
