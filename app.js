@@ -22,7 +22,6 @@ var db_connection = 'mongodb://localhost/openyorku'
 
 //include winston
 //include underscore
-
 var my_conf = require('./config.json');
 
 var app = express();
@@ -77,9 +76,11 @@ app.configure('test', function() {
 app.configure('development', function() {
 	console.log('DEVELOPMENT')
 
+	var args = process.argv.slice(2);
+	console.log('env = ' + args)
 	if (process.env.MONGOHQ_URL) {
-		//configuration for heroku.
-		console.log("database URL set : " + process.env.DATABASE_URL)
+		//if theres an mongohq_url variable set, use that as the url for the db. 
+		console.log("database URL set : " + process.env.db_connection)
 		db_connection = process.env.MONGOHQ_URL
 	}
 
