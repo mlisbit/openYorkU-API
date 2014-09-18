@@ -2,7 +2,6 @@
 import requests
 import requests_cache
 requests_cache.install_cache(expire_after=30) #not to crash the york 
-
 from bs4 import BeautifulSoup
 
 #print html_doc
@@ -64,6 +63,8 @@ def parse_listing_tables(the_html):
 	print section_html.prettify() #section_html.prettify().encode('utf-8')
 
 #takes in the url of a course.
+#THIS SHOULD BE REMOVED, and replaced with a proper stage parser...
+'''
 def get_info(url):
 	possible = {
 		'description': '',
@@ -85,14 +86,64 @@ def get_info(url):
 	
 	#course_tables = section_lists.findAll('table')
 
-	'''
-	for i in course_tables:
-		print i
-	'''
+
+	#for i in course_tables:
+	#	print i
+
 	first_listing = 0
 	listing_increase = 5
 	#parse_listing_tables(course_tables[0])
 	#print section_lists.findAll('table')
+'''
+
+def stage_1_get_all_subjects(course_listing_soup):
+	#should get a list of the subjects, store them in a dictionary, return it.
+	subject_field = {
+		'subject_name': '',
+		'subject_number': '',
+		'request_url': ''
+	}
+
+	courses_found = []
+	for i in course_listing_soup.findAll('tr', { "bgcolor":"#ffffff" }):
+		courses_found.append(i)
+
+	for i in course_listing_soup.findAll('tr', { "bgcolor":"#e6e6e6" }):
+		courses_found.append(i)
+
+	all_fields = []
+	return all_fields
+
+def stage_2_get_courses_for_subject(subjects):
+	#wall the courses withing a certain subject. The table contains a field that shows a link to the couse Schedule (this will be stage 3)
+	class_field = {
+		'course_code':'',
+		'course_code':'',
+		'course_link': '',
+		'request_url': ''
+	}
+	all_classes = []
+
+	return all_classes
+
+def stage_3_get_sections_from_course(courses):
+	#get information for all the sections for a given course
+	section_field = {
+		'catagory_code': '',
+		'type': 'LECT',
+		'day': '',
+		'start_time': '',
+		'end_time': '',
+		'duration': '',
+		'location': '',
+		'instructor': '',
+		'section': '',
+		'term': 'F',
+		'is_available': False,
+		'term_year': '1415'
+	}
+	all_sections = []
+	return all_sections
 
 
 def main():
@@ -103,14 +154,11 @@ def main():
 	cdm_home = requests.get(base_url + "/Apps/WebObjects/cdm.woa")
 	cdm_soup = BeautifulSoup(cdm_home.text.encode('utf-8'))
 
-	
 	search_url = cdm_soup.find('a',  text="Subject")['href']
 	subject_select = requests.get(base_url + search_url)
 
-	
 	subject_soup = BeautifulSoup(subject_select.text.encode('utf-8'))
 	subject_opts = subject_soup.find("select", { "name" : "subjectPopUp" }).find_all("option")
-	
 	
 	subject_hash = {}
 	for subject in subject_opts:
@@ -142,24 +190,8 @@ def main():
 		print "YorkU server apperantly down..."
 		quit()
 
-	
-	courses_found = []
-	for i in soup.findAll('tr', { "bgcolor":"#ffffff" }):
-		courses_found.append(i)
-
-	for i in soup.findAll('tr', { "bgcolor":"#e6e6e6" }):
-		courses_found.append(i)
-
-	get_info(courses_found[0].select('td a')[0]['href'])
-	#print soup.get_text()
-	#get_info(courses_found[0].select('td a')[0].attrs['href'])
+	print stage_1_get_all_subjects(soup);
 
 					
 if __name__ == "__main__":
    main();
-
-
-
-
-
-#soup.findAll('a', { "class":"hdrlnk" }
