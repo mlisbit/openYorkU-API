@@ -12,7 +12,8 @@
     "mongodb": "*",
     "mongoose": "*",
     "winston": "*",
-    "express-mongoose-docs": "*"
+    "express-mongoose-docs": "*",
+    "minimist": "*"
   },
 	"scripts": {
     "start": "node index.js"

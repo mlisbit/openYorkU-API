@@ -20,6 +20,7 @@ var index = require('./routes/index');
 
 var db_connection = 'mongodb://localhost/openyorku'
 
+var args = require("minimist")(process.argv.slice(2))
 //include winston
 //include underscore
 var my_conf = require('./config.json');
@@ -36,7 +37,9 @@ app.configure(function() {
 	app.use(express.cookieParser(my_conf.server_options.cookie_parser_secret));
 	app.use(express.session());
 	app.use(app.router);
-	app.use(my_middleware.permissions);
+	if (args['check_key'] || my_conf.development_options.ignore_api_key === false) {
+		app.use(my_middleware.permissions);
+	}
 	app.use(my_middleware.counter);
 	app.use(my_middleware.api_ify);
 })
@@ -76,8 +79,9 @@ app.configure('test', function() {
 app.configure('development', function() {
 	console.log('DEVELOPMENT')
 
-	var args = process.argv.slice(2);
-	console.log('env = ' + args)
+	//var args = process.argv.slice(2);
+
+
 	if (process.env.MONGOHQ_URL) {
 		//if theres an mongohq_url variable set, use that as the url for the db. 
 		console.log("database URL set : " + process.env.db_connection)
