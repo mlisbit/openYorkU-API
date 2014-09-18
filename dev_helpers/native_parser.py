@@ -1,5 +1,8 @@
 #!/usr/bin/python
 import requests
+import requests_cache
+requests_cache.install_cache(expire_after=30) #not to crash the york 
+
 from bs4 import BeautifulSoup
 
 #print html_doc
@@ -72,9 +75,15 @@ def get_info(url):
 
 	#for i in course_soup.findAll('')
 	
-	section_lists = course_soup.select('html body table')[4].select('table')[5]
+	#section_lists = course_soup.select('html body table')[4].select('table')[5]
+	
+	section_lists = course_soup.select('html body table table table')[-1]
+	print section_lists
 
-	course_tables = section_lists.findAll('table')
+	parse_listing_tables(section_lists)
+	
+	
+	#course_tables = section_lists.findAll('table')
 
 	'''
 	for i in course_tables:
@@ -82,21 +91,44 @@ def get_info(url):
 	'''
 	first_listing = 0
 	listing_increase = 5
-	parse_listing_tables(course_tables[0])
-	#print section_lists.findAll('table')[0]
+	#parse_listing_tables(course_tables[0])
+	#print section_lists.findAll('table')
 
 
 def main():
-	wosid="bGAAyTQ96wEggrqeQZq0VM"
-	payload_number="1.10.7.5"
-	post_url_number="2.1.10.7"
-	course_number="0"
-	post_number="7"
+		
+	base_url = "https://w2prod.sis.yorku.ca"
+
+	#Start from root of the webobject application to generate proper session tokens
+	cdm_home = requests.get(base_url + "/Apps/WebObjects/cdm.woa")
+	cdm_soup = BeautifulSoup(cdm_home.text.encode('utf-8'))
+
+	
+	search_url = cdm_soup.find('a',  text="Subject")['href']
+	subject_select = requests.get(base_url + search_url)
+
+	
+	subject_soup = BeautifulSoup(subject_select.text.encode('utf-8'))
+	subject_opts = subject_soup.find("select", { "name" : "subjectPopUp" }).find_all("option")
+	
+	
+	subject_hash = {}
+	for subject in subject_opts:
+		subject_hash[subject['value']] = subject.text
+
+	
+	post_url = subject_soup.find("form", { "name" : "subjectForm"} )["action"]
+	payload_number = subject_soup.find("input", {"type" : "submit", "value" : "Search Courses"})["name"]
+	wosid= subject_soup.find("input", {"type" : "hidden", "name" : "wosid"})["value"]
+
+	
+	course_number = subject_hash.keys()[0]
+
 	payload2="sessionPopUp=0&subjectPopUp="+course_number+"&"+payload_number+"=Search+Courses&wosid="+wosid
 	headering={}
 
-	possible_url_2 = "https://w2prod.sis.yorku.ca/Apps/WebObjects/cdm.woa/"+post_number+"/wo/"+wosid+"/"+post_url_number
-	r = requests.post(possible_url_2, headers=headering, data=payload2)
+	
+	r = requests.post(post_url, headers=headering, data=payload2)
 
 	html_doc = r.text.encode('utf-8')
 
@@ -118,12 +150,14 @@ def main():
 	for i in soup.findAll('tr', { "bgcolor":"#e6e6e6" }):
 		courses_found.append(i)
 
+	get_info(courses_found[0].select('td a')[0]['href'])
 	#print soup.get_text()
-	get_info(courses_found[0].select('td a')[0].attrs['href'])
+	#get_info(courses_found[0].select('td a')[0].attrs['href'])
 
 					
 if __name__ == "__main__":
    main();
+
 
 
 

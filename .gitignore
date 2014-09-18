@@ -1,3 +1,4 @@
 /ve
 *.pyc
 /node_modules
+/dev_helpers/cache.sqlite
