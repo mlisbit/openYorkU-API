@@ -2,3 +2,5 @@
 *.pyc
 /node_modules
 /dev_helpers/cache.sqlite
+/dev_helpers/native_parser/cache.sqlite
+
