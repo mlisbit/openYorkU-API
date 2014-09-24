@@ -5,59 +5,6 @@ requests_cache.install_cache(expire_after=30) #not to crash the york
 from bs4 import BeautifulSoup
 import copy
 
-def parse_listing_tables(the_html):
-	returning={
-		'term': '',
-		'section': ''
-	}
-	print the_html
-	first_listing = 2
-	listing_increase = 2
-	section_html = the_html.select('table tr')[2]
-	returning['term'] = the_html.select('font b')[0].get_text().replace('Term', '').strip()
-	returning['section'] = the_html.select('font')[0].get_text().replace(the_html.select('font b')[0].get_text(), '').replace('Section', '').strip()
-	returning['type'] = section_html.findAll('td', {'valign': 'TOP'})[0].get_text()
-	returning['day'] = section_html.findAll('td', {'valign': 'TOP'})[2].get_text()
-	returning['start_time'] = section_html.findAll('td', {'valign': 'TOP'})[3].get_text()
-	returning['duration'] = section_html.findAll('td', {'valign': 'TOP'})[4].get_text()
-	returning['room_number'] = section_html.findAll('td', {'valign': 'TOP'})[5].get_text()
-	returning['instructor'] = section_html.findAll('td', {'valign': 'TOP'})[7].get_text()
-	print section_html.prettify() #section_html.prettify().encode('utf-8')
-
-#takes in the url of a course.
-#THIS SHOULD BE REMOVED, and replaced with a proper stage parser...
-'''
-def get_info(url):
-	possible = {
-		'description': '',
-	}
-	course_html = requests.get('https://w2prod.sis.yorku.ca'+url).text
-	course_soup = BeautifulSoup(course_html)
-
-	possible['description'] = course_soup.select('html body table')[2].select('p')[3].text
-
-	#for i in course_soup.findAll('')
-	
-	#section_lists = course_soup.select('html body table')[4].select('table')[5]
-	
-	section_lists = course_soup.select('html body table table table')[-1]
-	print section_lists
-
-	parse_listing_tables(section_lists)
-	
-	
-	#course_tables = section_lists.findAll('table')
-
-
-	#for i in course_tables:
-	#	print i
-
-	first_listing = 0
-	listing_increase = 5
-	#parse_listing_tables(course_tables[0])
-	#print section_lists.findAll('table')
-'''
-
 def get_wosid_and_number():
 	pass
 
@@ -142,11 +89,23 @@ def stage_3_get_sections_from_course(section_listing_soup):
 	}
 
 	description = section_listing_soup.select('html body table')[2].select('p')[3].text
-	
-	print description
+
+	#get the soup for all the mini tables (includes some junk)
+	tables = section_listing_soup.select('body')[0].findAll('td', {'colspan': '3'})
+	important_table = []
+
+	#removes the junk from the previous scrape. 
+	for i in range(1, len(tables), 2):
+		important_table.append(tables[i])
+
+	#get all the important fields.
+	for table in important_table:
+		print table.findAll('td', {'valign': 'TOP'})[0].parent.get_text('|').encode('utf-8')
+		for sub_table in range(0, len(table.findAll('td', {'valign': 'TOP'})[0].parent.find_next_siblings())):
+			print table.findAll('td', {'valign': 'TOP'})[0].parent.find_next_siblings()[sub_table].get_text('|').encode('utf-8')
+
 	all_sections = []
 	return all_sections
-
 
 def main():
 		
@@ -178,7 +137,7 @@ def main():
 
 			stage_2_get_courses_for_subject(course_listing_soup)
 	else:
-		the_subject = stage_1_get_all_subjects(subject_soup)[0]
+		the_subject = stage_1_get_all_subjects(subject_soup)[55]
 
 		course_listing_html = requests.post(the_subject['post_url'], headers={}, data=the_subject['subject_data_payload'])
 		course_listing_soup = BeautifulSoup(course_listing_html.text.encode('utf-8'))

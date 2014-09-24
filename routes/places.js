@@ -49,9 +49,16 @@ function checkIfOpen(instance) {
 	} else {
 		var current_day = getDayFromNumber(current_date.getDay())
 	}
+
+	if (instance.hours[current_day].open.toUpperCase() === 'CLOSED') {
+		return false
+	} 
+
 	var open = getDateFromString(instance.hours[current_day].open)
 	var close = getDateFromString(instance.hours[current_day].close, true)
+
 	return (current_date > open && current_date < close)
+	
 }
 
 function getDayFromNumber(day_number) {

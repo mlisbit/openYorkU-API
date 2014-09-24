@@ -3,6 +3,8 @@ import requests, sys, getopt
 import json
 import copy
 
+uri = 'api.openyorku.com'
+
 headers = {'content-type': 'application/json'}
 
 course_data_template = {
@@ -183,29 +185,27 @@ def get_building_db():
 
 def populate_subject_db():
 	for i in get_subject_db():	
-		r = requests.post('http://127.0.0.1:1337/subjects/', data=json.dumps(i), headers=headers)
+		r = requests.post('http://'+uri+'/subjects/', data=json.dumps(i), headers=headers)
 		if r.status_code != 200:
-			r = requests.put('http://127.0.0.1:1337/subjects/', data=json.dumps(i), headers=headers)
+			r = requests.put('http://'+uri+'/subjects/', data=json.dumps(i), headers=headers)
 
 def populate_course_db():
 	for i in get_course_db():	
-		r = requests.post('http://127.0.0.1:1337/courses/', data=json.dumps(i), headers=headers)
-		
-		break;
+		r = requests.post('http://'+uri+'/courses/', data=json.dumps(i), headers=headers)
 	
 def populate_restaurant_db():
 	for i in get_restaurant_db():	
 		print i['name'] + ' in building: ' + i['building']
-		r = requests.post('http://127.0.0.1:1337/places/restaurants', data=json.dumps(i), headers=headers)
+		r = requests.post('http://'+uri+'/places/restaurants', data=json.dumps(i), headers=headers)
 		if r.status_code != 200:
-			r = requests.put('http://127.0.0.1:1337/places/restaurants', data=json.dumps(i), headers=headers)
+			r = requests.put('http://'+uri+'/places/restaurants', data=json.dumps(i), headers=headers)
 
 def populate_building_db():
 	for i in get_building_db():	
 		#print i['name'] + 'in building: ' + i['building']
-		r = requests.post('http://127.0.0.1:1337/places/buildings', data=json.dumps(i), headers=headers)
+		r = requests.post('http://'+uri+'/places/buildings', data=json.dumps(i), headers=headers)
 		if r.status_code != 200:
-			r = requests.put('http://127.0.0.1:1337/places/buildings', data=json.dumps(i), headers=headers)
+			r = requests.put('http://'+uri+'/places/buildings', data=json.dumps(i), headers=headers)
 
 def test():
 	pass
