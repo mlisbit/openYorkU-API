@@ -16,12 +16,6 @@ from datetime import datetime, timedelta
 ##########################################################################################
 ##########################################################################################
 
-def get_wosid_and_number():
-	pass
-
-def extract_subject_code():
-	pass
-
 #pre: takes in a soup object of the subject listing html page.
 #post: returns an array of all the subjects, and their respective post urls and post data in a dictionary.
 def stage_1_get_all_subjects(subject_listing_soup):
@@ -140,15 +134,15 @@ def stage_3_get_sections_from_course(section_listing_soup):
 			current_section_field['section'] = section_letters[term_and_section_counter]
 			current_section_field['description'] = description
 			current_section_field['type'] = ''.join([i for i in split_row[0] if not i.isdigit()])
-			current_section_field['day'] = split_row[1]
-			current_section_field['start_time'] = split_row[2]
-			current_section_field['duration'] = split_row[3]
+			current_section_field['day'] = split_row[1].strip()
+			current_section_field['start_time'] = split_row[2].strip()
+			current_section_field['duration'] = split_row[3].strip()
 			current_section_field['location'] = split_row[4].strip()
-			current_section_field['catagory_number'] = split_row[5]
-			current_section_field['instructor'] = split_row[6]
-			current_section_field['notes'] = split_row[7]
+			current_section_field['catagory_number'] = split_row[5].strip()
+			current_section_field['instructor'] = split_row[6].strip()
+			current_section_field['notes'] = split_row[7].strip()
 			current_section_field['building'] = ''.join([i for i in current_section_field['location'] if not i.isdigit()])
-			current_section_field['end_time'] = (datetime.strptime(current_section_field['start_time'], "%H:%M") + timedelta(minutes=5)).strftime("%H:%M")
+			current_section_field['end_time'] = (datetime.strptime(current_section_field['start_time'], "%H:%M") + timedelta(minutes=int(float(current_section_field['duration'])))).strftime("%H:%M")
 			all_sections.append(current_section_field)
 
 	
