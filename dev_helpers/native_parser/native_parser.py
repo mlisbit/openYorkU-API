@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 import requests
 import requests_cache
 requests_cache.install_cache(expire_after=30) #not to crash the york 
@@ -6,6 +7,7 @@ from bs4 import BeautifulSoup
 import copy
 import time
 import json
+import re
 from datetime import datetime, timedelta
 
 ##########################################################################################
@@ -17,23 +19,35 @@ from datetime import datetime, timedelta
 ##########################################################################################
 ##########################################################################################
 
+#the characters \xc2\xa0 keep appearing in the outpu of the terminal. No amount of converts
+#or encodings make it dissapear... So this function exists for that sole purpose of removing it. 
+def clean_string(the_string):
+	return the_string.replace('\xc2\xa0', ' ').replace("\r\n", ' ').replace('  ', ' ').strip()
+
+
 # pre: takes in the text from a soup object
 # post: return true if the page returned a valid response. quit the program gracefully, and output details about what
 # program last parsed. 
-def check_if_not_kicked(soup_text):
+def check_if_not_kicked(soup_text, current_subject_number):
 	if 'You have exceeded the maximum time limit' in soup_text.get_text():
-		f = open('progress', 'w')
+		f = open('progress.dat', 'a+')
 		f.write('FAULT: \'invalid request credentials.\'\n')
 		f.close()
 		print "invalid request credentials."
 		quit()
 
 	if "We are currently experiencing technical problems." in soup_text.get_text():
-		f = open('progress', 'w')
+		f = open('progress.dat', 'a+')
 		f.write('FAULT: \'We are currently experiencing technical problems\'\n')
 		f.close()
 		print "YorkU server apperantly down..."
 		quit()
+
+	f = open('progress.dat', 'a+')
+	#print current_subject_number
+	f.write('DOING: ' + str(current_subject_number) + '\n')
+	f.close()
+
 
 #pre: takes in a soup object of the subject listing html page.
 #post: returns an array of all the subjects, and their respective post urls and post data in a dictionary.
@@ -57,7 +71,9 @@ def stage_1_get_all_subjects(subject_listing_soup):
 	#populate the array with filled out subject_field dictionaries. 
 	for subject in subject_opts:
 		current_subject_field = copy.deepcopy(subject_field)
-		current_subject_field['subject_name'] = subject.text
+		subjectMatch = re.match(r'([A-Z]*)\s*-\s*(.*)\s*-\s*', subject.text, flags=0) 
+		current_subject_field['subject_name'] = subjectMatch.group(2).strip()
+		current_subject_field['subject_code'] = subjectMatch.group(1).strip()
 		current_subject_field['subject_number'] = subject['value']
 		current_subject_field['subject_data_payload']="sessionPopUp=0&subjectPopUp="+current_subject_field['subject_number']+"&"+payload_number+"=Search+Courses&wosid="+wosid
 		current_subject_field['post_url'] = post_url
@@ -73,6 +89,9 @@ def stage_2_get_courses_for_subject(course_listing_soup):
 		'course_code': '',
 		'course_name': '',
 		'course_link': '',
+		'course_credit': '',
+		'course_year': '',
+		'course_faculty': '',
 	}
 
 	all_classes = []
@@ -85,12 +104,14 @@ def stage_2_get_courses_for_subject(course_listing_soup):
 	for i in course_listing_soup.findAll('tr', { "bgcolor":"#e6e6e6" }):
 		courses_found.append(i)
 
-	check_if_not_kicked(course_listing_soup)
-
 	for course in courses_found:
 		current_course_field = copy.deepcopy(class_field)
-		current_course_field['course_code'] = course.findAll('td')[0].get_text()
-		current_course_field['course_name'] = course.findAll('td')[1].get_text()
+		courseMatch = re.match(r'([A-Z]*)/([A-Z]{3,} (\d+)\w*)\s*(.*)', course.findAll('td')[0].get_text(), flags=0) 
+		current_course_field['course_code'] = courseMatch.group(2).replace(" ", "")
+		current_course_field['course_credit'] = float(courseMatch.group(4))
+		current_course_field['course_year'] = int(courseMatch.group(3)[0])
+		current_course_field['course_faculty'] = courseMatch.group(1).strip()
+		current_course_field['course_name'] = course.findAll('td')[1].get_text().strip()
 		current_course_field['course_link'] = "https://w2prod.sis.yorku.ca" + course.select('td a')[0].attrs['href']
 		all_classes.append(current_course_field)
 
@@ -108,6 +129,7 @@ def stage_3_get_sections_from_course(section_listing_soup):
 		'end_time': '',
 		'duration': '',
 		'location': '',
+		'room': '',
 		'instructor': '',
 		'section': '',
 		'term': '',
@@ -116,7 +138,7 @@ def stage_3_get_sections_from_course(section_listing_soup):
 		'building':  ''
 	}
 
-	description = section_listing_soup.select('html body table')[2].select('p')[3].text
+	description = section_listing_soup.select('html body table')[2].select('p')[3].text.encode('utf-8').rstrip()
 	#get the soup for all the mini tables (includes some junk)
 	tables = section_listing_soup.select('body')[0].findAll('td', {'colspan': '3'})
 	important_table = []
@@ -149,22 +171,33 @@ def stage_3_get_sections_from_course(section_listing_soup):
 	
 		for row in result_table_text:
 			#print row
-			split_row = row.split('|')
+			split_row = row.rstrip().split('|')
 			current_section_field = copy.deepcopy(section_field)
 			current_section_field['term'] = term_letters[term_and_section_counter]
 			current_section_field['section'] = section_letters[term_and_section_counter]
-			current_section_field['description'] = description
-			current_section_field['type'] = ''.join([i for i in split_row[0] if not i.isdigit()])
-			current_section_field['day'] = split_row[1].strip()
+			current_section_field['description'] = clean_string(description)
+			current_section_field['type'] = ''.join([i for i in split_row[0] if not i.isdigit()]).strip()
+
+			checkDateMatch = re.compile(r'[A-Z]') #the field is not a date! this happens with ISTY courses. 
+			
+			if not checkDateMatch.match(clean_string(split_row[1])):
+				#inject a date of N/A to account for this.
+				split_row.insert(1, 'N/A')
+
+			current_section_field['day'] = clean_string(split_row[1])
 			current_section_field['start_time'] = split_row[2].strip()
 			current_section_field['duration'] = split_row[3].strip()
-			current_section_field['location'] = split_row[4].strip()
 			
+			locationMatch = re.match(r'([A-Z]*\s*[A-Z]*)(\d*)', clean_string(split_row[4]), flags=0) 
+			current_section_field['room'] = locationMatch.group(2) 
+			current_section_field['location'] = locationMatch.group().strip()
+			current_section_field['building'] = locationMatch.group(1) 
+
 			
 			try:
 				#this course must be canceled if this exception is hit.
 				current_section_field['catagory_number'] = split_row[5].strip()
-				current_section_field['instructor'] = split_row[6].strip()
+				current_section_field['instructor'] = clean_string(split_row[6].strip())
 				if split_row[2].strip() == 'Cancelled':
 					pass
 			except:
@@ -176,17 +209,23 @@ def stage_3_get_sections_from_course(section_listing_soup):
 				#They do not have course codes, nor start times and end times. 
 				#example: FILM 1701
 				current_section_field['end_time'] = (datetime.strptime(current_section_field['start_time'], "%H:%M") + timedelta(minutes=int(float(current_section_field['duration'])))).strftime("%H:%M")
-				current_section_field['notes'] = split_row[7].strip()
+				current_section_field['notes'] = clean_string(split_row[7].strip())
 			except:
 				current_section_field['notes'] = ''
 				current_section_field['end_time'] = 'N/A'
 
-			current_section_field['building'] = ''.join([i for i in current_section_field['location'] if not i.isdigit()])
+			if not current_section_field['building']:
+				current_section_field['building'] = 'N/A'
+			
 			all_sections.append(copy.deepcopy(current_section_field))
 
 	return all_sections
 
 def main():
+	# you may be wondering why this is here if it's already in the for loop. We need it to get 
+	# the total number of subjects offered at york. 
+
+	open('progress.dat', 'w').close() #erase the contents of progress.dat, so if there's an error, we know where it failed. 
 	base_url = "https://w2prod.sis.yorku.ca"
 
 	#Start from root of the webobject application to generate proper session tokens
@@ -195,12 +234,11 @@ def main():
 
 	search_url = cdm_soup.find('a',  text="Subject")['href']
 	subject_select = requests.get(base_url + search_url)
-	print "session and request url: " + str(base_url + search_url)
 
 	subject_soup = BeautifulSoup(subject_select.text.encode('utf-8'))
 	subject_count = len(stage_1_get_all_subjects(subject_soup)) - 1 #count all the subjects.
 
-	time.sleep(30) #if there's no delay, yorku wont serve the request.
+	#time.sleep(30) #if there's no delay, yorku wont serve the request.
 
 	if (True):
 		#sigh, we have to regenerate a new session key on every request for a new subject, otherwise york may drop the request.
@@ -213,8 +251,9 @@ def main():
 
 			search_url = cdm_soup.find('a',  text="Subject")['href']
 			subject_select = requests.get(base_url + search_url)
-			print "session and request url: " + str(base_url + search_url)
-			
+		
+			#print "session and request url: " + str(base_url + search_url)
+
 			subject_soup = BeautifulSoup(subject_select.text.encode('utf-8'))
 
 			current_subject = stage_1_get_all_subjects(subject_soup)[current_subject_index]
@@ -222,16 +261,19 @@ def main():
 			course_listing_html = requests.post(current_subject['post_url'], headers={}, data=current_subject['subject_data_payload'])
 			course_listing_soup = BeautifulSoup(course_listing_html.text.encode('utf-8'))
 
+			check_if_not_kicked(course_listing_soup, current_subject_index)
+
 			all_courses = stage_2_get_courses_for_subject(course_listing_soup)
-			#print all_courses[3]
 			for course in all_courses:
-				print  json.loads(json.dumps(course['course_code'], ensure_ascii=False, indent=4))
+				#print  json.loads(json.dumps(course['course_faculty'], ensure_ascii=False, indent=4))
 				section_listing_html = requests.get(course['course_link'])
 				section_listing_soup = BeautifulSoup(section_listing_html.text.encode('utf-8'))
 
-				listings = stage_3_get_sections_from_course(section_listing_soup)
-				for i in listings:
-					#print i
+				sections = stage_3_get_sections_from_course(section_listing_soup)
+				for section in sections:
+					#print  json.loads(json.dumps(section['location'], ensure_ascii=False, indent=4))
+					print dict(section.items() + course.items() + current_subject.items())
+					#print '---------------'
 					pass
 
 			time.sleep(30) #if there's no delay, yorku wont serve the request.
